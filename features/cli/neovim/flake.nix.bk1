@@ -1,0 +1,66 @@
+{
+  description = "Neovim flake with treesitter and catppuccin";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    neovim-src = {
+      url = "github:neovim/neovim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  outputs = { self, nixpkgs, neovim-src, system }:
+    let
+      pkgs = nixpkgs.legacyPackages.${system};
+      nvim = neovim-src.packages.${system}.default;
+
+      # Treesitter grammars
+      treeSitterGrammars = with pkgs.tree-sitter.grammars; [
+        go
+        c
+        nix
+        lua
+        zig
+        ruby
+      ];
+
+
+      # Catppuccin theme
+      catppuccin = pkgs.vimUtils.buildVimPlugin {
+        name = "catppuccin";
+        src = pkgs.fetchFromGitHub {
+          owner = "catppuccin";
+          repo = "nvim";
+          rev = "latest"; # Or a specific commit
+          sha256 = "sha256-4965db2d6155c25db4e8417465fc2703fdf4c2b7"; # Replace with actual sha256
+        };
+      };
+
+      # Package neovim with plugins and config
+      nvimCustom = nvim.overrideAttrs (oldAttrs: {
+        buildInputs = oldAttrs.buildInputs ++ [
+          treeSitterGrammars
+          catppuccin
+        ];
+
+        installPhase = ''
+          ${oldAttrs.installPhase}
+
+          # Install init.lua
+          mkdir -p $out/share/nvim/
+          cp ./init.lua $out/share/nvim/init.lua
+          cp -r ./lua $out/share/nvim/
+        '';
+      });
+
+    in {
+      defaultApp = {
+        type = "app";
+        program = "${nvimCustom}/bin/nvim";
+      };
+
+      devShells.default = pkgs.mkShell {
+        buildInputs = [ nvimCustom ];
+      };
+    };
+}
