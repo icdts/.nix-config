@@ -47,7 +47,7 @@ lspconfig.nil_ls.setup {
   on_attach = on_attach,
 }
 
-lspconfig.ruby_ls.setup {
+lspconfig.ruby_lsp.setup {
   capabilities = capabilities,
   on_attach = on_attach,
 }
@@ -60,4 +60,23 @@ lspconfig.gopls.setup {
 lspconfig.zls.setup {
   capabilities = capabilities,
   on_attach = on_attach,
+}
+
+-- Configure lua-language-server
+lspconfig.lua_ls.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = {'vim'}, -- Add 'vim' as a global to avoid warnings
+      },
+      workspace = {
+        library = {
+          [vim.fn.stdpath('data')..'/site/share/nvim/lspconfig/schema/meta.json'] = true, -- Neovim runtime path
+          [vim.fn.stdpath('data')..'/site/share/nvim/lspconfig/schema/messages.json'] = true,
+        },
+      },
+    },
+  },
 }

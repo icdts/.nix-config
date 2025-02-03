@@ -39,6 +39,7 @@
         ruby-lsp
         gopls
         zls
+				lua-language-server
       ];
 	};
 }

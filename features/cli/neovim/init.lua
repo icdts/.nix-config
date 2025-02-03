@@ -18,3 +18,6 @@ require('nvim-treesitter.configs').setup {
     enable = true,
   },
 }
+
+require("nvim-cmp")
+require("lsp")
