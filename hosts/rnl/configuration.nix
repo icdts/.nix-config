@@ -25,7 +25,7 @@
   ];
   programs.nm-applet.enable = true;
 
-  # services.asusd.enable = true;
+  services.asusd.enable = true;
   services.fstrim.enable = true; #ssd health
 
   hardware.bluetooth.enable = true; # enables support for Bluetooth
