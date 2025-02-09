@@ -25,6 +25,10 @@
 		"$fileManager" = "ghostty sh -c nvim";
 		"$terminal" = "ghostty";
 
+		input = {
+			kb_options = "caps:hyper";
+		};
+
 		env = [
 		  "XCURSOR_SIZE,24"
 		  "QT_QPA_PLATFORMTHEME,qt6ct"
