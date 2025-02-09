@@ -7,7 +7,7 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- open netrw
-vim.keymap.set("n", "<leader>ex", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>n", vim.cmd.Ex)
 
 -- Move current line along with us when moving up and down
 -- >+ moves current selection down a line (swap with current line)
@@ -62,11 +62,9 @@ vim.keymap.set('n', ' k', vim.lsp.buf.signature_help, { desc = 'Signature Docume
 
 
 -- ???
--- vim.keymap.set("x", "<leader>p", [["_dP]])
--- vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
--- vim.keymap.set("n", "<leader>Y", [["+Y]])
--- vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
-vim.keymap.set("n", "<leader>et", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set({"n", "v"}, "<leader>y", [["+y]], { desc = '[y]ank line or selection into system clipboard'})
+vim.keymap.set({"n", "v"}, "<leader>d", [["_d]], { desc = 'delete and discard.  [d]on\'t put in any register' } )
+vim.keymap.set("n", "<leader>rw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = '[r]eplace [w]ord in file' })
 
 vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { desc = '[G]oto [D]eclaration' } )
 
