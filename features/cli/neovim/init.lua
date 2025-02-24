@@ -19,6 +19,7 @@ require('nvim-treesitter.configs').setup {
   },
 }
 
+require("mysetup.indent-blankline")
 require("mysetup.nvim-cmp")
 require("mysetup.lsp")
 require("mysetup.line")

@@ -13,9 +13,9 @@
 			enable = true;
 			defaultEditor = true;
 			plugins = with pkgs.vimPlugins; [ 
-				catppuccin-nvim
-				nvim-treesitter.withAllGrammars
-				which-key-nvim
+				catppuccin-nvim # coloring
+				nvim-treesitter.withAllGrammars # syntax highlighting`
+				which-key-nvim # popup showing what key presses do what
 				indent-blankline-nvim
 				comment-nvim
 				nvim-lspconfig
