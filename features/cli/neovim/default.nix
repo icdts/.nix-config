@@ -25,6 +25,8 @@
 				cmp-cmdline
 				cmp-nvim-lsp
 				lualine-nvim
+				telescope-nvim
+				telescope-fzf-native-nvim
 			];
 			extraLuaConfig = builtins.readFile ./init.lua;
 		};
