@@ -20,7 +20,7 @@
       	enable = true;
 	systemd.enable = false;
 	settings = {
-		"$mod" = "SUPER";
+		"$mod" = "MOD3";
 		"$menu" = "wofi --show drun";
 		"$fileManager" = "ghostty sh -c nvim";
 		"$terminal" = "ghostty";

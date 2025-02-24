@@ -86,7 +86,7 @@
             inputs.home-manager.nixosModules.home-manager
             {
               # add home-manager settings here
-              home-manager.useGlobalPkgs = true;
+              # home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users."${username}" = home-manager;
               home-manager.backupFileExtension = "home-manager.bk";

@@ -1,6 +1,7 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+vim.keymap.set('n', 'gcc', '<Nop>', { silent = true })
 --clear search on esc
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
