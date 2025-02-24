@@ -1,5 +1,5 @@
-require("lua.set");
-require("lua.remap");
+require("mysetup.set");
+require("mysetup.remap");
 
 -- briefly highlight what is being yanked
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -19,7 +19,7 @@ require('nvim-treesitter.configs').setup {
   },
 }
 
-require("lua.nvim-cmp")
-require("lua.lsp")
-require("lua.line")
-require("lua.telescope")
+require("mysetup.nvim-cmp")
+require("mysetup.lsp")
+require("mysetup.line")
+require("mysetup.telescope")
