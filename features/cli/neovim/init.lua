@@ -21,4 +21,4 @@ require('nvim-treesitter.configs').setup {
 
 require("nvim-cmp")
 require("lsp")
-require("lualine")
+require("line")

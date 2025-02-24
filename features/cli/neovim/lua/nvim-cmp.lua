@@ -1,4 +1,3 @@
--- lua/cmp_nvim_cmp.lua (Create this file)
 local cmp = require'cmp'
 
 cmp.setup {
