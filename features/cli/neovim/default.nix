@@ -24,6 +24,7 @@
 				cmp-path
 				cmp-cmdline
 				cmp-nvim-lsp
+				lualine-nvim
 			];
 			extraLuaConfig = builtins.readFile ./init.lua;
 		};
