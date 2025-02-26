@@ -16,17 +16,17 @@
 				catppuccin-nvim # coloring
 				nvim-treesitter.withAllGrammars # syntax highlighting`
 				which-key-nvim # popup showing what key presses do what
-				indent-blankline-nvim
-				comment-nvim
-				nvim-lspconfig
-				nvim-cmp
-				cmp-buffer
-				cmp-path
-				cmp-cmdline
-				cmp-nvim-lsp
-				lualine-nvim
-				telescope-nvim
-				telescope-fzf-native-nvim
+				indent-blankline-nvim #highlighting indent
+				nvim-lspconfig # lsp integration
+				lualine-nvim # status line
+				telescope-nvim # file nav
+				telescope-fzf-native-nvim # use fzf integration
+
+				nvim-cmp # completion engine
+				cmp-buffer	# completion sourced from buffer
+				cmp-path # completion of filesystem paths
+				cmp-cmdline # vim's command line completion 
+				cmp-nvim-lsp # completion sourced from lsp
 			];
 			extraLuaConfig = builtins.readFile ./init.lua;
 		};
@@ -37,12 +37,12 @@
       };
     };
 		home.packages = with pkgs; [
-        ccls
-        nil
-        ruby-lsp
-        gopls
-        zls
-				lua-language-server
-      ];
+			ccls
+			nil
+			ruby-lsp
+			gopls
+			zls
+			lua-language-server
+		];
 	};
 }

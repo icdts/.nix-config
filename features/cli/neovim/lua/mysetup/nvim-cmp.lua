@@ -4,7 +4,7 @@ cmp.setup {
   snippet = {
     -- REQUIRED - you must specify a snippet engine
     expand = function(args)
-      require('cmp_luasnip').lsp_expand(args.body) -- For luasnip
+			vim.snippet.expand(args.body)
     end,
   },
   mapping = cmp.mapping.preset.insert({
@@ -24,21 +24,4 @@ cmp.setup {
     { name = 'buffer' },
     { name = 'cmdline' },
   }),
-  -- Use default configuration for now.
-  -- You can customize it later as needed.
-  --[[
-  window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
-  },
-  experimental = {
-    ghost_text = true,
-  },
-  --]]
 }
-
--- If you want to use LuaSnip, install it (and any LSP snippets you want)
--- and uncomment the following:
--- require'lspconfig'.lua_ls.setup {
---   capabilities = require('cmp_nvim_lsp').default_capabilities(),
--- }
