@@ -77,7 +77,7 @@
 
 		workspace = [
 		  "1, monitor:DP-1, on-created-empty:ghostty, persistant:true, default:true"
-		  "2, monitor:DP-2, on-created-empty:google-chrome-stable, persistant:true"
+		  "2, monitor:DP-2, on-created-empty:firefox, persistant:true"
 		];
 
 		windowrulev2 = [ 
