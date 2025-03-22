@@ -12,10 +12,16 @@
 
   hardware.graphics.enable = true;
   hardware.amdgpu.initrd.enable = true;
+	hardware.opengl.extraPackages = with pkgs; [
+		amdvlk
+	];
+	hardware.opengl.extraPackages32 = with pkgs; [
+		driversi686Linux.amdvlk
+	];
 
   boot = {
     kernelParams = [ "initcall_blacklist=acpi_cpufreq_init" "amd_pstate=passive"];
-    kernelModules = [ "zenpower" "asus_wmi" ];
+    kernelModules = [ "amdgpu" "zenpower" "asus_wmi" ];
     blacklistedKernelModules = [ "k10temp" ];
     extraModulePackages = [ config.boot.kernelPackages.zenpower ];
   };
