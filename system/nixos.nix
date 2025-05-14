@@ -9,17 +9,21 @@
       hardware-configuration,
     }:
       let
-        pkgs = inputs.nixpkgs.legacyPackages.${system};
+        syspkgs = import inputs.nixpkgs {
+					inherit system;
+					config.allowUnfree = true;
+				};
         home-manager = import ../home.nix;
       in
         inputs.nixpkgs.lib.nixosSystem {
           inherit system;
+					specialArgs = { inherit inputs; };
 
           modules = [
             {
               boot.loader.systemd-boot.enable = true;
               boot.loader.efi.canTouchEfiVariables = true;
-              boot.kernelPackages = pkgs.linuxPackages_latest;
+              boot.kernelPackages = syspkgs.linuxPackages_latest;
               networking.networkmanager.enable = true;
 
               time.timeZone = "America/Chicago";
@@ -63,24 +67,20 @@
                 flavor = "mocha";
               };
 
-              nixpkgs.config.allowUnfree = true;
-              environment.systemPackages = with pkgs; [
-                #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-                #  wget
+              environment.systemPackages = with syspkgs; [
                 zsh
                 git
 								gnumake
               ];
               programs.zsh.enable = true;
-              users.defaultUserShell = pkgs.zsh;
+              users.defaultUserShell = syspkgs.zsh;
 
               fonts.enableDefaultPackages = true;
-              fonts.packages = with pkgs; [
+              fonts.packages = with syspkgs; [
                 nerd-fonts.fira-code
                 nerd-fonts.noto
               ];
             }
-
 
             hardware-configuration
             host-configuration

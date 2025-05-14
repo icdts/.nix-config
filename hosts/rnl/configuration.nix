@@ -46,6 +46,7 @@
   imports = [
    ../../module/laptop.nix
    ../../module/pipewire.nix
-   ../../module/disable-nvidia.nix
+   ../../module/enable-nvidia-prime.nix
+   #../../module/disable-nvidia.nix
   ];
 }

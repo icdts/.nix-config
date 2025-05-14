@@ -15,7 +15,7 @@
     self,
     home-manager,
     nixpkgs,
-    # catppuccin,
+    catppuccin,
     ...
   }: let
     nixos-system = import ./system/nixos.nix {

@@ -4,13 +4,15 @@
 			blacklistedKernelModules = [ "nouveau" ];
 		};
 
-		services.xserver.videoDrivers = lib.mkDefault [ "nvidia" ];
-		hardware.nvidia.open = false;
-    amdgpu.initrd.enable = true;
+		hardware.graphics.enable = true;
+
+		services.xserver.videoDrivers = [ "nvidia" ];
 
     hardware.nvidia = {
+			open = false;
       modesetting.enable = true;
       nvidiaSettings = true;
+			package = config.boot.kernelPackages.nvidiaPackages.stable;
 			prime = {
 				offload = {
 					enable = true;
@@ -20,8 +22,8 @@
         nvidiaBusId = "PCI:198:0:0"; #c4:00.0
 			};
 			powerManagement = {
-        enable = lib.mkDefault true;
-        finegrained = lib.mkDefault true;
+        enable = true;
+        finegrained = true;
       };
 
       dynamicBoost.enable = lib.mkDefault true;  
