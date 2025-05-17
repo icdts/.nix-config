@@ -20,14 +20,10 @@
       	enable = true;
 	systemd.enable = false;
 	settings = {
-		"$mod" = "MOD3";
+		"$mod" = "SUPER";
 		"$menu" = "wofi --show drun";
 		"$fileManager" = "ghostty sh -c nvim";
 		"$terminal" = "ghostty";
-
-		input = {
-			kb_options = "caps:hyper";
-		};
 
 		env = [
 		  "XCURSOR_SIZE,24"
@@ -47,6 +43,8 @@
 		  gaps_in = 0;
 		  gaps_out = 0;
 		  border_size = 0;
+			resize_on_border = true;
+			layout = "dwindle";
 		};
 
 		decoration = {
@@ -60,15 +58,15 @@
 		  enabled = false;
 		};
 
+		input = {
+			kb_options = "caps:escape";
+		};
+
 		dwindle = {
 		  # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
 		  pseudotile = true; # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
 		  preserve_split = true; # you probably want this
 		  force_split = 2;
-		};
-
-		master = {
-		  smart_resizing = false;
 		};
 
 		gestures = {

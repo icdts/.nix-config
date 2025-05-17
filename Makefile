@@ -1,8 +1,8 @@
 .PHONY: all
-all: switch
+all: build switch
 
 .PHONY: switch 
-switch: build
+switch: 
 	sudo nixos-rebuild switch --flake .
 
 .PHONY: build

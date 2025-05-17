@@ -32,7 +32,7 @@
 
         dotDir = ".config/zsh";
 
-        initExtra = ''
+        initContent= ''
           export NIX_PATH nixpkgs=channel:nixos-unstable
           export NIX_LOG info
 
