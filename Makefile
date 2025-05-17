@@ -1,12 +1,12 @@
 .PHONY: all
-all: build switch
+all: clean update build switch
 
 .PHONY: switch 
 switch: 
 	sudo nixos-rebuild switch --flake .
 
 .PHONY: build
-build: clean update
+build:
 	nixos-rebuild build --flake .
 
 .PHONY: update
