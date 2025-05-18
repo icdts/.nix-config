@@ -42,6 +42,8 @@
     enable = true;
     withUWSM = true;
   };
+	services.blueman.enable = true;
+
 
   imports = [
    ../../module/laptop.nix

@@ -5,7 +5,6 @@
     options.custom.desktop.hyprland.enable = mkEnableOption "hyprland config";
 
     config = mkIf cfg.enable {
-
       programs.zsh = {
         initExtra = ''
         case $(tty) in
