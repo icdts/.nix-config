@@ -15,6 +15,8 @@
         '';
       };
 
+			services.mako.enable = true;
+
       wayland.windowManager.hyprland = {
       	enable = true;
 				systemd.enable = false;
@@ -39,7 +41,7 @@
 					];
 
 					general = {
-						gaps_in = 0;
+						gaps_in = 1;
 						gaps_out = 0;
 						border_size = 0;
 						resize_on_border = true;

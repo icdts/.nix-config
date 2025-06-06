@@ -32,6 +32,7 @@
     networkmanagerapplet
   ];
   programs.nm-applet.enable = true;
+	programs.adb.enable = true;
 
   services.asusd.enable = true;
   services.fstrim.enable = true; #ssd health
