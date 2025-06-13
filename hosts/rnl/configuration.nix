@@ -45,11 +45,13 @@
   };
 	services.blueman.enable = true;
 
+	nixpkgs.config.allowUnfree = true;
 
   imports = [
    ../../module/laptop.nix
    ../../module/pipewire.nix
    ../../module/enable-nvidia-prime.nix
+	 ../../module/steam.nix
    #../../module/disable-nvidia.nix
   ];
 }

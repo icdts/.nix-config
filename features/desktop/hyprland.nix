@@ -6,7 +6,7 @@
 
     config = mkIf cfg.enable {
       programs.zsh = {
-        initExtra = ''
+        initContent = ''
         case $(tty) in
           (/dev/tty1) if uwsm check may-start; then
             exec systemd-cat -t uwsm_start uwsm start default
@@ -41,8 +41,8 @@
 					];
 
 					general = {
-						gaps_in = 1;
-						gaps_out = 0;
+						gaps_in = 2;
+						gaps_out = 1;
 						border_size = 0;
 						resize_on_border = true;
 						layout = "dwindle";
