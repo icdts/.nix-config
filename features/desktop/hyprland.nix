@@ -106,7 +106,7 @@
 					];
 
 					bind = [
-						", Print, exec, grimblast copy area"
+						", Print, exec, grim -g \"$(slurp -d)\" - | wl-copy"
 						"$mod, S, togglespecialworkspace, magic"
 						"$mod SHIFT, S, movetoworkspace, special:magic"
 						"$mod, mouse_down, workspace, e+1"
