@@ -15,4 +15,4 @@ update:
 
 .PHONY: clean
 clean:
-	nix-collect-garbage --delete-older-than 30d
+	nix-collect-garbage -d --delete-older-than 30d
