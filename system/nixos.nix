@@ -68,12 +68,10 @@
               };
 
               environment.systemPackages = with syspkgs; [
-                zsh
                 git
 								gnumake
               ];
-              programs.zsh.enable = true;
-              users.defaultUserShell = syspkgs.zsh;
+              users.defaultUserShell = syspkgs.bash;
 
               fonts.enableDefaultPackages = true;
               fonts.packages = with syspkgs; [

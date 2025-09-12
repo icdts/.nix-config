@@ -5,16 +5,6 @@
     options.custom.desktop.hyprland.enable = mkEnableOption "hyprland config";
 
     config = mkIf cfg.enable {
-      programs.zsh = {
-        initContent = ''
-        case $(tty) in
-          (/dev/tty1) if uwsm check may-start; then
-            exec systemd-cat -t uwsm_start uwsm start default
-          fi
-        esac
-        '';
-      };
-
 			services.mako.enable = true;
 
       wayland.windowManager.hyprland = {
@@ -74,15 +64,9 @@
 						workspace_swipe = false;
 					};
 
-					workspace = [
-						"1, monitor:DP-1, on-created-empty:ghostty, persistant:true, default:true"
-						"2, monitor:DP-2, on-created-empty:firefox, persistant:true"
-					];
-
 					windowrulev2 = [ 
 						"suppressevent maximize, class:.*" 
 						"nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
-						"float, title:Volume Control"
 					];
 
 					# Laptop multimedia keys for volume and LCD brightness
@@ -125,10 +109,24 @@
 						"$mod, j, movefocus, d"
 						"$mod, k, movefocus, u"
 						"$mod, l, movefocus, r"
+
 						"$mod SHIFT, H, movewindow, l"
 						"$mod SHIFT, L, movewindow, r"
 						"$mod SHIFT, K, movewindow, u"
 						"$mod SHIFT, J, movewindow, d"
+						"$mod SHIFT, LEFT, movewindow, l"
+						"$mod SHIFT, RIGHT, movewindow, r"
+						"$mod SHIFT, UP, movewindow, u"
+						"$mod SHIFT, DOWN, movewindow, d"
+
+						"$mod CONTROL, h, movecurrentworkspacetomonitor, l"
+						"$mod CONTROL, l, movecurrentworkspacetomonitor, r"
+						"$mod CONTROL, k, movecurrentworkspacetomonitor, u"
+						"$mod CONTROL, j, movecurrentworkspacetomonitor, d"
+						"$mod CONTROL, LEFT, movecurrentworkspacetomonitor, l"
+						"$mod CONTROL, RIGHT, movecurrentworkspacetomonitor, r"
+						"$mod CONTROL, UP, movecurrentworkspacetomonitor, u"
+						"$mod CONTROL, DOWN, movecurrentworkspacetomonitor, d"
 					] ++ (
 						# workspaces
 						# binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
