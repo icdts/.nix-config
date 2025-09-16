@@ -35,7 +35,7 @@
 						gaps_out = 1;
 						border_size = 0;
 						resize_on_border = true;
-						layout = "dwindle";
+						layout = "master";
 					};
 
 					decoration = {
@@ -53,15 +53,15 @@
 						kb_options = "caps:escape";
 					};
 
-					dwindle = {
-						# See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
-						pseudotile = true; # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
-						preserve_split = true; # you probably want this
-						force_split = 2;
-					};
-
-					gestures = {
-						workspace_swipe = false;
+					# dwindle = {
+					# 	# See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
+					# 	pseudotile = true; # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
+					# 	preserve_split = true; # you probably want this
+					# 	force_split = 2;
+					# };
+					
+					master = {
+						mfact = 0.80;
 					};
 
 					windowrulev2 = [ 
