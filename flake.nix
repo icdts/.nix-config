@@ -29,6 +29,12 @@
         host-configuration = import ./hosts/rnl/configuration.nix;
         hardware-configuration = import ./hosts/rnl/hardware-configuration.nix;
       };
+      voron24 = nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+        modules = [
+          ./hosts/voron24/configuration.nix
+        ];
+      };
     };
   };
 }
