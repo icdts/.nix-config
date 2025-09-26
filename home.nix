@@ -1,4 +1,4 @@
-{pkgs, lib, ...}: {
+{pkgs, lib, profile, inputs, ...}: {
   home.packages = with pkgs; [git];
   home.stateVersion = "24.05";
   programs = {
@@ -19,10 +19,11 @@
   };
 
   imports = [
+		inputs.catppuccin.homeModules.catppuccin
     ./features
     {
       custom.cli.enable = true;
-      custom.desktop.enable = true;
+      custom.desktop.enable = lib.mkIf profile.graphical true;
     }
   ];
 }

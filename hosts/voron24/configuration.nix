@@ -1,107 +1,45 @@
-# /etc/nixos/configuration.nix
-# NixOS configuration for a Klipper-powered Voron 2.4 on a Raspberry Pi 4 B
-
-{ config, pkgs, ... }:
-
+{ pkgs, lib, inputs, ... }:
 let
   # -- Easy to change user variables --
   # Change these to your actual values
-  wifi-ssid = "wifinetworkname";
-  wifi-psk = "passwordforwifi";
-  
-  local-username = "localuser";
-  local-password = "passforlocal";
+  wifi-ssid = "[REDACTED]";
+  wifi-psk = "[REDACTED]";
 
 in
 {
-  # Import basic Raspberry Pi 4 hardware configuration
-  imports = [ 
-    <nixpkgs/nixos/modules/installer/cd-dvd/sd-image-aarch64.nix> 
-  ];
+	networking = {
+		networkmanager.enable = lib.mkForce false;
+		hostName = "voron24"; 
+		wireless.enable = true;
+		wireless.interfaces = [ "wlan0" ];
+		wireless.networks.${wifi-ssid} = {
+			psk = wifi-psk;
+		};
+	};
 
-  # ============================================================================
-  ## 1. NETWORKING
-  # ============================================================================
-
-  # Set a unique hostname for your printer
-  networking.hostName = "voron24"; 
-
-  # Wireless network connection
-  networking.wireless.enable = true;
-  networking.wireless.interfaces = [ "wlan0" ];
-  networking.wireless.networks.${wifi-ssid} = {
-    psk = wifi-psk;
+	services.klipper = {
+		enable = true;
+		# Add this settings block to satisfy the module's assertion.
+		# This is just a placeholder and will be overridden by your
+		# full printer.cfg file once you create it.
+		settings = {
+			printer = {
+				kinematics = "none";
+				max_velocity = 1;
+				max_accel = 1;
+			};
+		};
   };
-
-  # Enable Avahi daemon for .local hostname resolution (mDNS)
-  services.avahi = {
-    enable = true;
-    nssmdns = true; # Allows your Pi to find other .local devices
-    publish = {
-      enable = true;
-      addresses = true;
-      workstation = true;
-    };
-  };
-
-  # ============================================================================
-  ## 2. USER MANAGEMENT
-  # ============================================================================
-  
-  users.users.${local-username} = {
-    isNormalUser = true;
-    # IMPORTANT: Set a strong password. This is insecure for demonstration.
-    # After your first login, it is HIGHLY recommended to switch to SSH keys.
-    password = local-password;
-    extraGroups = [ "wheel" ]; # Gives this user sudo privileges
-  };
-
-  # -- Instructions for switching to SSH key authentication --
-  # 1. After logging in as 'localuser', generate an SSH key on your main computer.
-  # 2. Copy the PUBLIC key (e.g., ~/.ssh/id_ed25519.pub) into the section below.
-  # 3. Uncomment the following lines.
-  # 4. Comment out or delete the `password = local-password;` line above.
-  # 5. Run `sudo nixos-rebuild switch`.
-  /*
-  users.users.${local-username}.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAA... your-public-key-here"
-  ];
-  services.openssh.passwordAuthentication = false;
-  */
-
-  # ============================================================================
-  ## 3. PRINTER SERVICES (KLIPPER, FLUIDD, ETC.)
-  # ============================================================================
-
-  services.klipper = {
-    enable = true;
-    # The user 'klipper' will be created automatically.
-    # No extra config is needed here unless you have multiple MCUs to list.
-  };
-
-  # Moonraker is the API that connects Klipper to frontends like Fluidd
   services.moonraker = {
     enable = true;
-    # By default, it trusts localhost and allows connections from anywhere.
-    # This is fine for a private home network.
   };
-
-  # Fluidd is the web interface
   services.fluidd.enable = true;
 
-  # ============================================================================
-  ## 4. SYSTEM & HARDWARE CONFIGURATION
-  # ============================================================================
-
-  # Set the timezone for St. Paul, MN
-  time.timeZone = "America/Chicago";
-
-  # Enable the Samba service for network file sharing
   services.samba = {
     enable = true;
-    shares = {
+    settings = {
       gcode_files = {
-        path = "${config.services.klipper.dataDir}/gcodes";
+        path = "/var/lib/klipper/printer_data/gcodes";
         "guest ok" = "yes";
         "read only" = "no";
         "force user" = "klipper"; # Ensures files have correct permissions
@@ -110,7 +48,6 @@ in
     };
   };
 
-  # Persistent USB device path for your printer board
   services.udev.extraRules = ''
     # This rule creates a symlink /dev/print-board for your Octopus Pro.
     # To find the correct idVendor and idProduct:
@@ -123,30 +60,19 @@ in
   '';
 
 
-  # ============================================================================
-  ## 5. SYSTEM PACKAGES
-  # ============================================================================
-  
-  # Packages available globally on the system
   environment.systemPackages = with pkgs; [
-    # Git is required for version control
-    git
-    
     # Tools for building Klipper MCU firmware
     # This is the compiler toolchain for ARM MCUs like the one on the Octopus Pro
     gcc-arm-embedded 
     # Required for `make menuconfig`
-    kconfig 
+    kconfig-frontends 
     # Sometimes needed for flashing
     dfu-util 
   ];
-  
+	
+	imports = [
+	 (inputs.nixpkgs + "/nixos/modules/installer/sd-card/sd-image-aarch64.nix")
+	];
 
-  # ============================================================================
-  ## 6. SYSTEM BOOT AND SERVICES
-  # ============================================================================
-  
-  # Basic system settings
-  nixpkgs.config.allowUnfree = true;
-  system.stateVersion = "23.11"; # Set to the version of NixOS you installed
+	sdImage.compressImage	= false;
 }

@@ -5,6 +5,7 @@
 }: 
   system: 
     {
+			profile,
       host-configuration,
       hardware-configuration,
     }:
@@ -13,18 +14,27 @@
 					inherit system;
 					config.allowUnfree = true;
 				};
-        home-manager = import ../home.nix;
       in
         inputs.nixpkgs.lib.nixosSystem {
           inherit system;
-					specialArgs = { inherit inputs; };
+					specialArgs = { inherit inputs profile; };
 
           modules = [
             {
-              boot.loader.systemd-boot.enable = true;
+							boot.loader.systemd-boot.enable = inputs.nixpkgs.lib.mkIf (system == "x86_64-linux") true;
               boot.loader.efi.canTouchEfiVariables = true;
               boot.kernelPackages = syspkgs.linuxPackages_latest;
+
               networking.networkmanager.enable = true;
+							services.avahi = {
+								enable = true;
+								nssmdns4 = true;
+								publish = {
+									enable = true;
+									addresses = true;
+									workstation = true;
+								};
+							};
 
               time.timeZone = "America/Chicago";
 
@@ -87,8 +97,9 @@
               # add home-manager settings here
               # home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users."${username}" = home-manager;
+              home-manager.users."${username}" = import ../home.nix;
               home-manager.backupFileExtension = "home-manager.bk";
+							home-manager.extraSpecialArgs = { inherit inputs profile; };
             }
             inputs.catppuccin.nixosModules.catppuccin
           ];

@@ -7,11 +7,17 @@
       ./wayland.nix
     ];
 
-    options.custom.desktop.enable = mkEnableOption "desktop config";
+    options	= {
+			custom.desktop.enable = mkEnableOption "desktop config";
+		};
 
     config = mkIf cfg.enable {
       custom.desktop.hyprland.enable = true;
       custom.desktop.wayland.enable = true;
+			catppuccin.ghostty = {
+				enable = true;
+				flavor = "mocha";
+			};
       programs = {
         google-chrome.enable = true;
         firefox.enable = true;
@@ -20,7 +26,6 @@
           enableZshIntegration = true;
           installVimSyntax = true;
           settings = {
-            theme = "catppuccin-mocha";
             font-size = 10;
             window-decoration = false;
             window-theme = "ghostty";

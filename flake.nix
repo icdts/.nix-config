@@ -23,18 +23,25 @@
       username = "rn"; 
       userconfig = import ./users/rn.nix;
     };
+		nixosHosts = import ./hosts/default.nix;
   in {
-    nixosConfigurations = {
-      rnl = nixos-system "x86_64-linux" {
-        host-configuration = import ./hosts/rnl/configuration.nix;
-        hardware-configuration = import ./hosts/rnl/hardware-configuration.nix;
-      };
-      voron24 = nixpkgs.lib.nixosSystem {
-        system = "aarch64-linux";
-        modules = [
-          ./hosts/voron24/configuration.nix
-        ];
-      };
-    };
+
+    nixosConfigurations = nixpkgs.lib.mapAttrs (name: host: nixos-system host.system {
+			inherit (host) profile;
+			hardware-configuration = host.hardware;
+			host-configuration = host.configuration;
+		}) nixosHosts;
+
+		# {
+		#     rnl = nixos-system "x86_64-linux" {
+		#       host-configuration = import ./hosts/rnl/configuration.nix;
+		#       hardware-configuration = import ./hosts/rnl/hardware-configuration.nix;
+		#     };
+		#     voron24 = nixos-system "aarch64-linux" {
+		# 			host-configuration = import ./hosts/voron24/configuration.nix;
+		# 			hardware-configuration = import ./hosts/voron24/hardware-configuration.nix;
+		# 	};
+		#   };
+
   };
 }
