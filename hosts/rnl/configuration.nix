@@ -28,7 +28,6 @@
 			"resume_offset=157665280"
 		];
     kernelModules = [ "amdgpu" "zenpower" "asus_wmi" ];
-    blacklistedKernelModules = [ "k10temp" ];
     extraModulePackages = [ config.boot.kernelPackages.zenpower ];
 		binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
