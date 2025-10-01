@@ -6,12 +6,11 @@
 
 	config = mkIf cfg.enable {
 
-    home.sessionVariables = {
-      EDITOR = "nvim";
-    };
 		programs.neovim = {
 			enable = true;
 			defaultEditor = true;
+			viAlias	= true;
+			vimAlias = true;
 			plugins = with pkgs.vimPlugins; [ 
 				catppuccin-nvim # coloring
 				nvim-treesitter.withAllGrammars # syntax highlighting`

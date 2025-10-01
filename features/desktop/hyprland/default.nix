@@ -14,10 +14,10 @@
     config = mkIf cfg.enable {
 			custom.desktop.hyprland.waybar.enable	= true;
 			services.mako.enable = true;
-			systemd.user.targets."graphical-session".unitConfig.wants = [ "mako.service" "waybar.service" ];
+			systemd.user.targets."graphical-session".unitConfig.wants = [ "mako.service" ];
 
 			home.file = {
-				".config/systemd/user/graphical-session.target.wants/mako.service" = {
+				".config/systemd/user/hyprland-session.target.wants/mako.service" = {
 					source = "${config.services.mako.package}/share/systemd/user/mako.service";
 				};
 			};

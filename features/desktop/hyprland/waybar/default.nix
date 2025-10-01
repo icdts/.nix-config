@@ -14,9 +14,16 @@ in {
   options.custom.desktop.hyprland.waybar.enable = mkEnableOption "waybar";
 
   config = mkIf cfg.enable {
+		systemd.user.targets."graphical-session".unitConfig.wants = [ "waybar.service" ];
+		home.file = {
+			".config/systemd/user/hyprland-session.target.wants/waybar.service" = {
+				source = "${config.programs.waybar.package}/share/systemd/user/waybar.service";
+			};
+		};
     programs.waybar = {
       enable = true;
-			#systemd.enable = true;
+			systemd.enable = true;
+
       style = ''
         ${mkWaybarColors palette}
 
