@@ -12,6 +12,7 @@
 		};
 
     config = mkIf cfg.enable {
+      xdg.portal.config.common.default = "*";
       custom.desktop.hyprland.enable = true;
       custom.desktop.wayland.enable = true;
 			catppuccin.ghostty = {
