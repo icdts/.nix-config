@@ -36,6 +36,13 @@
 								};
 							};
 
+							programs.neovim = {
+                enable = true;          # 1. Install Neovim
+                defaultEditor = true;   # 2. Set $EDITOR and $VISUAL to nvim
+                viAlias = true;         # 3. Create 'vi' alias/symlink
+                vimAlias = true;        # 4. Create 'vim' alias/symlink
+              };
+
               time.timeZone = "America/Chicago";
 
               i18n.defaultLocale = "en_US.UTF-8";
