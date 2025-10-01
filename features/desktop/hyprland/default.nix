@@ -1,15 +1,34 @@
-{config,lib,...}:
+{config,lib,pkgs,inputs,...}:
   with lib; let
     cfg = config.custom.desktop.hyprland;
+		palette = (lib.importJSON "${config.catppuccin.sources.palette}/palette.json").${config.catppuccin.flavor}.colors;
+		stripHash = hex: lib.substring 1 6 hex;
+		toggle-mirror = pkgs.writeShellScriptBin "toggle-mirror"
+     (builtins.readFile ./toggle-mirror.sh);
   in {
+    imports = [
+			./waybar
+		];
     options.custom.desktop.hyprland.enable = mkEnableOption "hyprland config";
 
     config = mkIf cfg.enable {
+			custom.desktop.hyprland.waybar.enable	= true;
 			services.mako.enable = true;
+			systemd.user.targets."graphical-session".unitConfig.wants = [ "mako.service" "waybar.service" ];
 
+			home.file = {
+				".config/systemd/user/graphical-session.target.wants/mako.service" = {
+					source = "${config.services.mako.package}/share/systemd/user/mako.service";
+				};
+			};
+
+			
+			home.packages = [ toggle-mirror ];
       wayland.windowManager.hyprland = {
       	enable = true;
-				systemd.enable = false;
+				systemd.enable = true;
+				systemd.variables = ["--all"];
+				package = null;
 				settings = {
 					"$mod" = "SUPER";
 					"$menu" = "wofi --show drun";
@@ -20,12 +39,15 @@
 						"XCURSOR_SIZE,24"
 						"QT_QPA_PLATFORMTHEME,qt6ct"
 						"AQ_DRM_DEVICES,/dev/dri/card1"
+						"WGPU_DRM_DEVICES,/dev/dri/card1"
 						"NIXOS_OZONE_WL,1"
+						"GDK_BACKEND,wayland"
+						"QT_QPA_PLATFORM,wayland;xcb"
 					];
 
 					exec-once = [
-						"waybar"
-						"mako"
+						# "systemctl --user start waybar.service"
+						# "mako"
 						"/usr/lib/polkit-kde-authentication-agent-1"
 						"nm-applet"
 					];
@@ -33,9 +55,13 @@
 					general = {
 						gaps_in = 2;
 						gaps_out = 1;
-						border_size = 0;
+						border_size = 2;
 						resize_on_border = true;
 						layout = "master";
+						# col.active_border = "rgb(89b4fa)";
+						# col.inactive_border = "rgb(313244)";
+						"col.active_border" = "rgb(${stripHash palette.blue.hex})";
+						"col.inactive_border" = "rgb(${stripHash palette.surface0.hex})";
 					};
 
 					decoration = {
@@ -51,14 +77,11 @@
 
 					input = {
 						kb_options = "caps:escape";
+						touchpad = {
+							natural_scroll = false;
+							disable_while_typing = true;
+						};
 					};
-
-					# dwindle = {
-					# 	# See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
-					# 	pseudotile = true; # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
-					# 	preserve_split = true; # you probably want this
-					# 	force_split = 2;
-					# };
 					
 					master = {
 						mfact = 0.80;
@@ -102,8 +125,8 @@
 						"$mod, E, exec, $fileManager"
 						"$mod, V, togglefloating,"
 						"$mod, R, exec, $menu"
-						"$mod, P, pseudo, # dwindle"
-						"$mod, J, togglesplit, # dwindle"
+						"$mod, F, fullscreen"
+						"$mod, P, exec, toggle-mirror"
 
 						"$mod, h, movefocus, l"
 						"$mod, j, movefocus, d"
@@ -127,6 +150,14 @@
 						"$mod CONTROL, RIGHT, movecurrentworkspacetomonitor, r"
 						"$mod CONTROL, UP, movecurrentworkspacetomonitor, u"
 						"$mod CONTROL, DOWN, movecurrentworkspacetomonitor, d"
+
+						"$mod, Tab, layoutmsg, cyclenext,"
+						"$mod SHIFT, Tab, layoutmsg, cycleprev,"
+						"$mod CONTROL, l, layoutmsg, setmfact 0.05"
+						"$mod CONTROL, h, layoutmsg, setmfact -0.05"
+						"$mod CONTROL, RIGHT, layoutmsg, setmfact 0.05"
+						"$mod CONTROL, LEFT, layoutmsg, setmfact -0.05"
+						"$mod, Return, layoutmsg, swapwithmaster"
 					] ++ (
 						# workspaces
 						# binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
@@ -140,9 +171,9 @@
 					);
 
 					monitor = [
-						"DP-3, 1920x1080@60, 960x0, 1"
-						"eDP-1, 2880x1800@60, 0x1080, 1"
-						"DP-2, 3840x2160@144, 2880x0, 1"
+						"desc:AOC 2460G4 F61G4BA005375, 1920x1080@60, 960x0, 1"
+						"desc:Samsung Display Corp. ATNA33AA08-0, 2880x1800@60, 0x1080, 1"
+						"desc:GIGA-BYTE TECHNOLOGY CO. LTD. Gigabyte M32U 22181B001184, 3840x2160@144, 2880x0, 1"
 					];
 				};
 			};

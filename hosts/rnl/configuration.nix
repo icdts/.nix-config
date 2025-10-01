@@ -39,7 +39,6 @@
   programs.nm-applet.enable = true;
 	programs.adb.enable = true;
 
-  services.asusd.enable = true;
   services.fstrim.enable = true; #ssd health
 
   hardware.bluetooth.enable = true; # enables support for Bluetooth
@@ -49,6 +48,12 @@
     withUWSM = true;
   };
 	services.blueman.enable = true;
+
+  services.asusd.enable = true;
+	powerManagement.enable = true;
+	services.power-profiles-daemon.enable = true;
+	services.auto-cpufreq.enable = false;
+	services.tlp.enable = false;
 
 	nixpkgs.config.allowUnfree = true;
 

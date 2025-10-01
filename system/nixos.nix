@@ -97,7 +97,13 @@
               # add home-manager settings here
               # home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users."${username}" = import ../home.nix;
+              home-manager.users."${username}" = {
+								imports = [
+									inputs.catppuccin.homeModules.catppuccin
+									../features
+									../home.nix
+								];
+							};
               home-manager.backupFileExtension = "home-manager.bk";
 							home-manager.extraSpecialArgs = { inherit inputs profile; };
             }

@@ -3,7 +3,7 @@
     cfg = config.custom.desktop;
   in {
     imports = [
-      ./hyprland.nix
+      ./hyprland
       ./wayland.nix
     ];
 
@@ -33,5 +33,14 @@
           };
         };
       };
+
+			fonts.fontconfig = {
+				enable = true;
+				defaultFonts = {
+					serif = [ "NotoSerif Nerd Font" "FiraCode Nerd Font" ];
+					sansSerif = [ "NotoSans Nerd Font" "FiraCode Nerd Font" ];
+					monospace = [ "FiraCode Nerd Font" "NotoMono Nerd Font" ];
+				};
+			};	
     };
   }
