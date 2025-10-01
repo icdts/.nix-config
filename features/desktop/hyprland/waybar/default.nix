@@ -145,6 +145,10 @@ in {
               default = "";
             };
           };
+					"hyprland/window" = {
+							"separate-outputs" = true;
+							format = "{title}";
+					};
           "keyboard-state" = {
             numlock = true;
             capslock = true;
