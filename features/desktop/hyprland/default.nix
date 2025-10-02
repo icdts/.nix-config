@@ -47,7 +47,7 @@ let
   hyprlandWorkspaceConfig =
     lib.mapAttrsToList (name: value:
       if value.workspace != null
-      then "workspace = ${toString value.workspace}, monitor:${value.description}"
+      then "${toString value.workspace}, monitor:${value.description}"
       else "") (lib.filterAttrs (n: v: v.workspace != null) monitorDefinitions);
 
 in {
@@ -67,7 +67,7 @@ in {
 
         "$mod" = "SUPER";
         "$menu" = "wofi --show drun";
-        "$fileManager" = "ghostty sh -c nvim";
+        "$fileManager" = "ghostty -e nvim ~/";
         "$terminal" = "ghostty";
         env = [
           "XCURSOR_SIZE,24"
@@ -81,12 +81,11 @@ in {
         exec-once = [
           "/usr/lib/polkit-kde-authentication-agent-1"
           "nm-applet"
-          "hyprctl dispatch exec \"[workspace 1] ghostty\""
-          "hyprctl dispatch exec \"[workspace 2] google-chrome-stable https://messages.google.com/ https://mail.google.com/ https://unifi.ui.com/consoles\""
-          "hyprctl dispatch exec \"[workspace 2] google-chrome-stable --app=https://www.destiny.gg/embed/chat\""
-          "hyprctl dispatch exec \"[workspace 3] google-chrome-stable https://google.com\""
-          "hyprctl dispatch exec \"[workspace 3] ghostty\""
-          "hyprctl --batch \"dispatch workspace 3; dispatch layoutmsg setmfact 0.5\""
+          "google-chrome-stable --window-name=\"chrome-workspace2\" https://messages.google.com/ https://mail.google.com/ https://unifi.ui.com/consoles"
+          "google-chrome-stable --window-name=\"chrome-dgg\" --app=https://www.destiny.gg/embed/chat"
+          "google-chrome-stable --window-name=\"chrome-workspace3\" --new-window"
+          "ghostty --title=ghostty-workspace3"
+          "hyprctl --batch \"dispatch workspace 1; dispatch workspace 2; dispatch workspace 3;"
         ];
         general = {
           gaps_in = 2;
@@ -110,7 +109,14 @@ in {
           };
         };
         master = { mfact = 0.80; };
-        windowrulev2 = [ "suppressevent maximize, class:.*" "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0" ];
+				windowrulev2 = [
+          "suppressevent maximize, class:.*"
+          "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+          "workspace 3, class:com.mitchellh.ghostty, title:ghostty-workspace3"
+          "workspace 2, class:google-chrome, initialTitle:chrome-workspace2"
+          "workspace 2, class:chrome-www.destiny.gg__embed_chat-Default"
+          "workspace 3, class:google-chrome, title:chrome-workspace3"
+        ];
         bindel = [
           ",XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
           ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
