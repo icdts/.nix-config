@@ -1,0 +1,9 @@
+creation_rules:
+  - path_regex: .*\.sops\.nix$
+    key_groups:
+      - age:
+          - "age1l2v63t3waf8hx55ctezx6l4pnj7tuf339t06e8um27tx3y5kzdpstrtp00"
+  - path_regex: secrets.json$
+    key_groups:
+      - age:
+          - "age1l2v63t3waf8hx55ctezx6l4pnj7tuf339t06e8um27tx3y5kzdpstrtp00"

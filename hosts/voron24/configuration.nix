@@ -1,20 +1,17 @@
-{ pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 let
-  # -- Easy to change user variables --
-  # Change these to your actual values
-  wifi-ssid = "[REDACTED]";
-  wifi-psk = "[REDACTED]";
-
+  # wifi-ssid = config.sops.secrets.wifi-ssid;
+  # wifi-psk = config.sops.secrets.wifi-psk;
 in
 {
 	networking = {
-		networkmanager.enable = lib.mkForce false;
+		# networkmanager.enable = lib.mkForce false;
 		hostName = "voron24"; 
-		wireless.enable = true;
-		wireless.interfaces = [ "wlan0" ];
-		wireless.networks.${wifi-ssid} = {
-			psk = wifi-psk;
-		};
+		# wireless.enable = true;
+		# wireless.interfaces = [ "wlan0" ];
+		# wireless.networks.${wifi-ssid} = {
+		# 	psk = wifi-psk;
+		# };
 	};
 
 	services.klipper = {
