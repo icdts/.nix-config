@@ -16,6 +16,16 @@ in
     ../users/rn/default.nix
   ];
 
+  nix.settings = {
+    trusted-users = [ "@wheel" ];
+    auto-optimise-store = true;
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    warn-dirty = true;
+  };
+
   sops = {
     defaultSopsFile = ../secrets.json;
     age.keyFile = "/var/lib/sops/key.txt";

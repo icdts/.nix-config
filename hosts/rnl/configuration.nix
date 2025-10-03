@@ -1,17 +1,5 @@
 { config, pkgs, ... }:
 {
-  nix = {
-    settings = {
-      auto-optimise-store = true;
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-      trusted-users = [ "@wheel" ];
-      warn-dirty = false;
-    };
-  };
-
   networking.hostName = "rnl";
 
   hardware.graphics = {
