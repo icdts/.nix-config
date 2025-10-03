@@ -22,6 +22,9 @@ cmp.setup {
     { name = 'nvim_lua' },
     { name = 'luasnip' }, -- Snippets, you'll need to install a snippet plugin (like luasnip)
     { name = 'buffer' },
-    { name = 'cmdline' },
   }),
+
+	cmp.setup.cmdline(":", {
+		sources = cmp.config.sources({ {name = 'cmdline'} })
+	})
 }

@@ -13,10 +13,16 @@ vim.diagnostic.config({
   underline = true,
   severity_sort = true,
   float = {
-    source = "always",
+    source = true,
   },
 })
 
+local function merge_tables(t1, t2)
+    local result = {}
+    for k, v in pairs(t1) do result[k] = v end
+    for k, v in pairs(t2) do result[k] = v end
+    return result
+end
 
 local on_attach = function(client, bufnr)
 	vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
@@ -36,18 +42,17 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
   vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-  
+
   -- Use modern APIs for diagnostics and formatting
   vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
-  vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-  vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+  vim.keymap.set('n', '[d', vim.diagnostic.jump, merge_tables(opts,{count=-1,float=true}))
+  vim.keymap.set('n', ']d', vim.diagnostic.jump, merge_tables(opts,{count=1,float=true}))
   vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
   vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, opts)
 end
 
 local servers = {
   ccls = {},
-  nil_ls = {},
   ruby_lsp = {},
   gopls = {},
   zls = {},
@@ -64,6 +69,7 @@ local servers = {
       },
     },
   },
+	nixd = {},
 }
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -76,4 +82,5 @@ for server_name, custom_settings in pairs(servers) do
   server_config = vim.tbl_deep_extend('force', server_config, custom_settings)
 
   vim.lsp.config(server_name, server_config)
+	vim.lsp.enable({server_name})
 end

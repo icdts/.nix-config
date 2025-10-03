@@ -42,11 +42,12 @@ in
     };
     home.packages = with pkgs; [
       ccls
-      nil
       ruby-lsp
       gopls
       zls
       lua-language-server
+      nixd
+      nixfmt
     ];
   };
 }
