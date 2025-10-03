@@ -1,5 +1,6 @@
 { config, lib, ... }:
-with lib; let
+with lib;
+let
   cfg = config.custom.desktop;
 in
 {
@@ -39,9 +40,18 @@ in
     fonts.fontconfig = {
       enable = true;
       defaultFonts = {
-        serif = [ "NotoSerif Nerd Font" "FiraCode Nerd Font" ];
-        sansSerif = [ "NotoSans Nerd Font" "FiraCode Nerd Font" ];
-        monospace = [ "FiraCode Nerd Font" "NotoMono Nerd Font" ];
+        serif = [
+          "NotoSerif Nerd Font"
+          "FiraCode Nerd Font"
+        ];
+        sansSerif = [
+          "NotoSans Nerd Font"
+          "FiraCode Nerd Font"
+        ];
+        monospace = [
+          "FiraCode Nerd Font"
+          "NotoMono Nerd Font"
+        ];
       };
     };
   };

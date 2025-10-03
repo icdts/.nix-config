@@ -1,5 +1,11 @@
-{ config, lib, pkgs, ... }:
-with lib; let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib;
+let
   cfg = config.custom.cli;
 in
 {
@@ -16,9 +22,14 @@ in
     programs.eza = {
       enable = true;
       enableBashIntegration = true;
-      extraOptions = [ "--icons" "--git" ];
+      extraOptions = [
+        "--icons"
+        "--git"
+      ];
     };
-    programs.bat = { enable = true; };
+    programs.bat = {
+      enable = true;
+    };
     programs.fzf = {
       enable = true;
       enableBashIntegration = true;

@@ -1,5 +1,11 @@
-{ pkgs, config, lib, ... }:
-with lib; let
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+with lib;
+let
   cfg = config.custom.cli.neovim;
 in
 {
@@ -16,7 +22,7 @@ in
         catppuccin-nvim # coloring
         nvim-treesitter.withAllGrammars # syntax highlighting`
         which-key-nvim # popup showing what key presses do what
-        indent-blankline-nvim #highlighting indent
+        indent-blankline-nvim # highlighting indent
         nvim-lspconfig # lsp integration
         lualine-nvim # status line
         telescope-nvim # file nav
@@ -25,7 +31,7 @@ in
         nvim-cmp # completion engine
         cmp-buffer # completion sourced from buffer
         cmp-path # completion of filesystem paths
-        cmp-cmdline # vim's command line completion 
+        cmp-cmdline # vim's command line completion
         cmp-nvim-lsp # completion sourced from lsp
       ];
       extraLuaConfig = builtins.readFile ./init.lua;

@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 {
   boot = {
     blacklistedKernelModules = [ "nouveau" ];
@@ -18,8 +23,8 @@
         enable = true;
         enableOffloadCmd = true;
       };
-      amdgpuBusId = "PCI:197:0:0"; #c5:00.0
-      nvidiaBusId = "PCI:198:0:0"; #c4:00.0
+      amdgpuBusId = "PCI:197:0:0"; # c5:00.0
+      nvidiaBusId = "PCI:198:0:0"; # c4:00.0
     };
     powerManagement = {
       enable = false;

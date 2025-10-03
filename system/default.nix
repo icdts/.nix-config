@@ -1,11 +1,11 @@
-{ inputs
-,
+{
+  inputs,
 }:
 system:
-{ profile
-, host-configuration
-, hardware-configuration
-,
+{
+  profile,
+  host-configuration,
+  hardware-configuration,
 }:
 inputs.nixpkgs.lib.nixosSystem {
   inherit system;

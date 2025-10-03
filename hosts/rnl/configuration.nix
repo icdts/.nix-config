@@ -1,8 +1,12 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   nix = {
     settings = {
       auto-optimise-store = true;
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       trusted-users = [ "@wheel" ];
       warn-dirty = false;
     };
@@ -20,11 +24,15 @@
       "amd_pstate=passive"
       "resume_offset=157665280"
     ];
-    kernelModules = [ "amdgpu" "zenpower" "asus_wmi" ];
+    kernelModules = [
+      "amdgpu"
+      "zenpower"
+      "asus_wmi"
+    ];
     extraModulePackages = [ config.boot.kernelPackages.zenpower ];
     binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
-  swapDevices = [{ device = "/swapfile"; }];
+  swapDevices = [ { device = "/swapfile"; } ];
 
   environment.systemPackages = with pkgs; [
     networkmanagerapplet
@@ -32,7 +40,7 @@
   programs.nm-applet.enable = true;
   programs.adb.enable = true;
 
-  services.fstrim.enable = true; #ssd health
+  services.fstrim.enable = true; # ssd health
 
   hardware.bluetooth.enable = true; # enables support for Bluetooth
 

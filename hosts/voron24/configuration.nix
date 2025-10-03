@@ -1,4 +1,10 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
   # wifi-ssid = config.sops.secrets.wifi-ssid;
   # wifi-psk = config.sops.secrets.wifi-psk;
@@ -55,7 +61,6 @@ in
     # The values "1d50" and "614e" are common for boards flashed with Klipper.
     SUBSYSTEM=="tty", ATTRS{idVendor}=="1d50", ATTRS{idProduct}=="614e", SYMLINK+="print-board"
   '';
-
 
   environment.systemPackages = with pkgs; [
     # Tools for building Klipper MCU firmware

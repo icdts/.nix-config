@@ -1,8 +1,16 @@
-{ config, lib, pkgs, inputs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 with lib;
 let
   cfg = config.custom.desktop.hyprland;
-  palette = (lib.importJSON "${config.catppuccin.sources.palette}/palette.json").${config.catppuccin.flavor}.colors;
+  palette =
+    (lib.importJSON "${config.catppuccin.sources.palette}/palette.json")
+    .${config.catppuccin.flavor}.colors;
   stripHash = hex: lib.substring 1 6 hex;
 
   toggleMirrorFactory = import ./toggle-mirror.nix;
@@ -39,19 +47,14 @@ let
     monitorDefinitions = monitorDefinitions;
   };
 
-  hyprlandMonitorConfig =
-    lib.mapAttrsToList
-      (name: value:
-        "${value.description}, ${value.resolution}, ${value.position}, ${value.scale}")
-      monitorDefinitions;
+  hyprlandMonitorConfig = lib.mapAttrsToList (
+    name: value: "${value.description}, ${value.resolution}, ${value.position}, ${value.scale}"
+  ) monitorDefinitions;
 
-  hyprlandWorkspaceConfig =
-    lib.mapAttrsToList
-      (name: value:
-        if value.workspace != null
-        then "${toString value.workspace}, monitor:${value.description}"
-        else "")
-      (lib.filterAttrs (n: v: v.workspace != null) monitorDefinitions);
+  hyprlandWorkspaceConfig = lib.mapAttrsToList (
+    name: value:
+    if value.workspace != null then "${toString value.workspace}, monitor:${value.description}" else ""
+  ) (lib.filterAttrs (n: v: v.workspace != null) monitorDefinitions);
 
 in
 {
@@ -112,7 +115,9 @@ in
             disable_while_typing = true;
           };
         };
-        master = { mfact = 0.80; };
+        master = {
+          mfact = 0.80;
+        };
         windowrulev2 = [
           "suppressevent maximize, class:.*"
           "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
@@ -178,15 +183,19 @@ in
           "$mod CONTROL, RIGHT, layoutmsg, setmfact 0.05"
           "$mod CONTROL, LEFT, layoutmsg, setmfact -0.05"
           "$mod, Return, layoutmsg, swapwithmaster"
-        ] ++ (
-          builtins.concatLists (builtins.genList
-            (i:
-              let ws = i + 1;
-              in [
-                "$mod, code:1${toString i}, workspace, ${toString ws}"
-                "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
-              ])
-            9));
+        ]
+        ++ (builtins.concatLists (
+          builtins.genList (
+            i:
+            let
+              ws = i + 1;
+            in
+            [
+              "$mod, code:1${toString i}, workspace, ${toString ws}"
+              "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
+            ]
+          ) 9
+        ));
       };
     };
   };

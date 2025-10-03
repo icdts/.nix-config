@@ -16,12 +16,13 @@
   };
 
   outputs =
-    inputs @ { self
-    , home-manager
-    , nixpkgs
-    , catppuccin
-    , sops-nix
-    , ...
+    inputs@{
+      self,
+      home-manager,
+      nixpkgs,
+      catppuccin,
+      sops-nix,
+      ...
     }:
     let
       nixos-system = import ./system {
@@ -30,12 +31,13 @@
       nixosHosts = import ./hosts;
     in
     {
-      nixosConfigurations = nixpkgs.lib.mapAttrs
-        (name: host: nixos-system host.system {
+      nixosConfigurations = nixpkgs.lib.mapAttrs (
+        name: host:
+        nixos-system host.system {
           inherit (host) profile;
           hardware-configuration = host.hardware;
           host-configuration = host.configuration;
-        })
-        nixosHosts;
+        }
+      ) nixosHosts;
     };
 }

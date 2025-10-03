@@ -1,14 +1,25 @@
-{ config, lib, pkgs, ... }:
-with lib; let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib;
+let
   cfg = config.custom.desktop.hyprland.waybar;
-  waybar-battery-limit-pkg = pkgs.writeShellScriptBin "waybar-battery-limit"
-    (builtins.readFile ./waybar-battery-limit.sh);
-
-  palette = (lib.importJSON "${config.catppuccin.sources.palette}/palette.json").${config.catppuccin.flavor}.colors;
-
-  mkWaybarColors = palette: lib.concatStringsSep "\n" (
-    lib.mapAttrsToList (name: color: "@define-color ${name} ${color.hex};") palette
+  waybar-battery-limit-pkg = pkgs.writeShellScriptBin "waybar-battery-limit" (
+    builtins.readFile ./waybar-battery-limit.sh
   );
+
+  palette =
+    (lib.importJSON "${config.catppuccin.sources.palette}/palette.json")
+    .${config.catppuccin.flavor}.colors;
+
+  mkWaybarColors =
+    palette:
+    lib.concatStringsSep "\n" (
+      lib.mapAttrsToList (name: color: "@define-color ${name} ${color.hex};") palette
+    );
 
 in
 {
@@ -129,9 +140,20 @@ in
           layer = "top";
           position = "top";
           height = 40;
-          modules-left = [ "hyprland/workspaces" "hyprland/submap" "keyboard-state" "pulseaudio" "custom/battery-limit" ];
+          modules-left = [
+            "hyprland/workspaces"
+            "hyprland/submap"
+            "keyboard-state"
+            "pulseaudio"
+            "custom/battery-limit"
+          ];
           modules-center = [ "hyprland/window" ];
-          modules-right = [ "cpu" "memory" "tray" "clock" ];
+          modules-right = [
+            "cpu"
+            "memory"
+            "tray"
+            "clock"
+          ];
           "hyprland/workspaces" = {
             format = "{name}";
             "format-icons" = {
@@ -208,7 +230,10 @@ in
               phone = "";
               portable = "";
               car = "";
-              default = [ "" "" ];
+              default = [
+                ""
+                ""
+              ];
             };
             "on-click" = "pavucontrol";
           };

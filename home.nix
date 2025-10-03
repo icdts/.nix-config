@@ -1,4 +1,11 @@
-{ pkgs, lib, profile, inputs, ... }: {
+{
+  pkgs,
+  lib,
+  profile,
+  inputs,
+  ...
+}:
+{
   # imports = [
   # inputs.catppuccin.homeModules.catppuccin
   #   ./features
@@ -27,7 +34,10 @@
   nix = {
     package = lib.mkDefault pkgs.nix;
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
     };
   };
 }
