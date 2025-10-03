@@ -55,11 +55,21 @@
   services.power-profiles-daemon.enable = true;
   services.auto-cpufreq.enable = false;
   services.tlp.enable = false;
+  services.logind = {
+    settings.Login = {
+      HandleLidSwitch = "suspend-then-hibernate";
+      HandleLidSwitchExternalPower = "suspend-then-hibernate";
+      HandleLidSwitchDocked = "suspend-then-hibernate";
+      HibernateDelaySec = "20min";
+      IdleAction = "suspend-then-hibernate";
+      IdleActionSec = "30min";
+    };
+  };
 
   nixpkgs.config.allowUnfree = true;
 
   imports = [
-    ../../module/laptop.nix
+    # ../../module/laptop.nix
     ../../module/pipewire.nix
     ../../module/enable-nvidia-prime.nix
     ../../module/steam.nix

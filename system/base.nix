@@ -93,7 +93,10 @@ in
 
   services.openssh = {
     enable = true;
-    settings.PermitRootLogin = "no";
+    settings = {
+      PermitRootLogin = "no";
+      AcceptEnv = "TERM LANG LC_* LANGUAGE COLORTERM";
+    };
     allowSFTP = true;
   };
 
