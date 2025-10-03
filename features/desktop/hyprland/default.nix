@@ -12,7 +12,7 @@ let
       description = "desc:Samsung Display Corp. ATNA33AA08-0";
       resolution = "2880x1800@60";
       position = "0x1080";
-      scale = "1";
+      scale = "1.5";
       workspace = 1;
       primary = true;
     };
