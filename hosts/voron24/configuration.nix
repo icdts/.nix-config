@@ -4,28 +4,28 @@ let
   # wifi-psk = config.sops.secrets.wifi-psk;
 in
 {
-	networking = {
-		# networkmanager.enable = lib.mkForce false;
-		hostName = "voron24"; 
-		# wireless.enable = true;
-		# wireless.interfaces = [ "wlan0" ];
-		# wireless.networks.${wifi-ssid} = {
-		# 	psk = wifi-psk;
-		# };
-	};
+  networking = {
+    # networkmanager.enable = lib.mkForce false;
+    hostName = "voron24";
+    # wireless.enable = true;
+    # wireless.interfaces = [ "wlan0" ];
+    # wireless.networks.${wifi-ssid} = {
+    # 	psk = wifi-psk;
+    # };
+  };
 
-	services.klipper = {
-		enable = true;
-		# Add this settings block to satisfy the module's assertion.
-		# This is just a placeholder and will be overridden by your
-		# full printer.cfg file once you create it.
-		settings = {
-			printer = {
-				kinematics = "none";
-				max_velocity = 1;
-				max_accel = 1;
-			};
-		};
+  services.klipper = {
+    enable = true;
+    # Add this settings block to satisfy the module's assertion.
+    # This is just a placeholder and will be overridden by your
+    # full printer.cfg file once you create it.
+    settings = {
+      printer = {
+        kinematics = "none";
+        max_velocity = 1;
+        max_accel = 1;
+      };
+    };
   };
   services.moonraker = {
     enable = true;
@@ -60,16 +60,16 @@ in
   environment.systemPackages = with pkgs; [
     # Tools for building Klipper MCU firmware
     # This is the compiler toolchain for ARM MCUs like the one on the Octopus Pro
-    gcc-arm-embedded 
+    gcc-arm-embedded
     # Required for `make menuconfig`
-    kconfig-frontends 
+    kconfig-frontends
     # Sometimes needed for flashing
-    dfu-util 
+    dfu-util
   ];
-	
-	imports = [
-	 (inputs.nixpkgs + "/nixos/modules/installer/sd-card/sd-image-aarch64.nix")
-	];
 
-	sdImage.compressImage	= false;
+  imports = [
+    (inputs.nixpkgs + "/nixos/modules/installer/sd-card/sd-image-aarch64.nix")
+  ];
+
+  sdImage.compressImage = false;
 }

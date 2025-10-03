@@ -1,6 +1,6 @@
-{...}:{
-    imports = [
-      ./cli
-      ./desktop
-    ];
-  }
+{ ... }: {
+  imports = [
+    ./cli
+    ./desktop
+  ];
+}

@@ -40,17 +40,21 @@ let
   };
 
   hyprlandMonitorConfig =
-    lib.mapAttrsToList (name: value:
-      "${value.description}, ${value.resolution}, ${value.position}, ${value.scale}")
-    monitorDefinitions;
+    lib.mapAttrsToList
+      (name: value:
+        "${value.description}, ${value.resolution}, ${value.position}, ${value.scale}")
+      monitorDefinitions;
 
   hyprlandWorkspaceConfig =
-    lib.mapAttrsToList (name: value:
-      if value.workspace != null
-      then "${toString value.workspace}, monitor:${value.description}"
-      else "") (lib.filterAttrs (n: v: v.workspace != null) monitorDefinitions);
+    lib.mapAttrsToList
+      (name: value:
+        if value.workspace != null
+        then "${toString value.workspace}, monitor:${value.description}"
+        else "")
+      (lib.filterAttrs (n: v: v.workspace != null) monitorDefinitions);
 
-in {
+in
+{
   imports = [ ./waybar ];
   options.custom.desktop.hyprland.enable = mkEnableOption "hyprland config";
 
@@ -109,7 +113,7 @@ in {
           };
         };
         master = { mfact = 0.80; };
-				windowrulev2 = [
+        windowrulev2 = [
           "suppressevent maximize, class:.*"
           "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
           "workspace 3, class:com.mitchellh.ghostty, title:ghostty-workspace3"
@@ -175,13 +179,14 @@ in {
           "$mod CONTROL, LEFT, layoutmsg, setmfact -0.05"
           "$mod, Return, layoutmsg, swapwithmaster"
         ] ++ (
-          builtins.concatLists (builtins.genList (i:
-            let ws = i + 1;
-            in [
-              "$mod, code:1${toString i}, workspace, ${toString ws}"
-              "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
-            ])
-          9));
+          builtins.concatLists (builtins.genList
+            (i:
+              let ws = i + 1;
+              in [
+                "$mod, code:1${toString i}, workspace, ${toString ws}"
+                "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
+              ])
+            9));
       };
     };
   };

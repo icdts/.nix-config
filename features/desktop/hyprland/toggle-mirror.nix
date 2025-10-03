@@ -4,32 +4,36 @@ let
     let
       primaryDesc = (lib.findFirst (m: m.primary == true) null (lib.attrValues monitorDefinitions)).description;
     in
-      lib.removePrefix "desc:" primaryDesc;
+    lib.removePrefix "desc:" primaryDesc;
 
   extendCaseStatementBody = lib.concatStringsSep "\n" (
-    lib.mapAttrsToList (name: value:
-      let
-        desc_no_prefix = lib.removePrefix "desc:" value.description;
-        workspaceCmd =
-          if value.workspace != null
-          then ''WORKSPACE_BATCH_CMD+="dispatch moveworkspacetomonitor ${toString value.workspace} $name;";''
-          else "";
-      in
-      ''
-        "${desc_no_prefix}")
-          MONITOR_BATCH_CMD+="keyword monitor $name,${value.resolution},${value.position},${value.scale};"
-          ${workspaceCmd}
-          ;;
-      ''
-    ) monitorDefinitions
+    lib.mapAttrsToList
+      (name: value:
+        let
+          desc_no_prefix = lib.removePrefix "desc:" value.description;
+          workspaceCmd =
+            if value.workspace != null
+            then ''WORKSPACE_BATCH_CMD+="dispatch moveworkspacetomonitor ${toString value.workspace} $name;";''
+            else "";
+        in
+        ''
+          "${desc_no_prefix}")
+            MONITOR_BATCH_CMD+="keyword monitor $name,${value.resolution},${value.position},${value.scale};"
+            ${workspaceCmd}
+            ;;
+        ''
+      )
+      monitorDefinitions
   );
 
   mirrorWorkspaceCmds = lib.concatStringsSep "\n" (
-    lib.mapAttrsToList (name: value:
-      if value.workspace != null
-      then ''WORKSPACE_BATCH_CMD+="dispatch moveworkspacetomonitor ${toString value.workspace} $PRIMARY_MONITOR_NAME;";''
-      else ""
-    ) (lib.filterAttrs (n: v: v.workspace != null) monitorDefinitions)
+    lib.mapAttrsToList
+      (name: value:
+        if value.workspace != null
+        then ''WORKSPACE_BATCH_CMD+="dispatch moveworkspacetomonitor ${toString value.workspace} $PRIMARY_MONITOR_NAME;";''
+        else ""
+      )
+      (lib.filterAttrs (n: v: v.workspace != null) monitorDefinitions)
   );
 
 in

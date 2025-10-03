@@ -1,28 +1,29 @@
-{config, lib, pkgs, ...}:
-  with lib; let
-    cfg = config.custom.desktop.hyprland.waybar;
-    waybar-battery-limit-pkg = pkgs.writeShellScriptBin "waybar-battery-limit"
-      (builtins.readFile ./waybar-battery-limit.sh);
+{ config, lib, pkgs, ... }:
+with lib; let
+  cfg = config.custom.desktop.hyprland.waybar;
+  waybar-battery-limit-pkg = pkgs.writeShellScriptBin "waybar-battery-limit"
+    (builtins.readFile ./waybar-battery-limit.sh);
 
-    palette = (lib.importJSON "${config.catppuccin.sources.palette}/palette.json").${config.catppuccin.flavor}.colors;
+  palette = (lib.importJSON "${config.catppuccin.sources.palette}/palette.json").${config.catppuccin.flavor}.colors;
 
-    mkWaybarColors = palette: lib.concatStringsSep "\n" (
-      lib.mapAttrsToList (name: color: "@define-color ${name} ${color.hex};") palette
-		);
+  mkWaybarColors = palette: lib.concatStringsSep "\n" (
+    lib.mapAttrsToList (name: color: "@define-color ${name} ${color.hex};") palette
+  );
 
-in {
+in
+{
   options.custom.desktop.hyprland.waybar.enable = mkEnableOption "waybar";
 
   config = mkIf cfg.enable {
-		systemd.user.targets."graphical-session".unitConfig.wants = [ "waybar.service" ];
-		home.file = {
-			".config/systemd/user/hyprland-session.target.wants/waybar.service" = {
-				source = "${config.programs.waybar.package}/share/systemd/user/waybar.service";
-			};
-		};
+    systemd.user.targets."graphical-session".unitConfig.wants = [ "waybar.service" ];
+    home.file = {
+      ".config/systemd/user/hyprland-session.target.wants/waybar.service" = {
+        source = "${config.programs.waybar.package}/share/systemd/user/waybar.service";
+      };
+    };
     programs.waybar = {
       enable = true;
-			systemd.enable = true;
+      systemd.enable = true;
 
       style = ''
         ${mkWaybarColors palette}
@@ -145,10 +146,10 @@ in {
               default = "";
             };
           };
-					"hyprland/window" = {
-							"separate-outputs" = true;
-							format = "{title}";
-					};
+          "hyprland/window" = {
+            "separate-outputs" = true;
+            format = "{title}";
+          };
           "keyboard-state" = {
             numlock = true;
             capslock = true;
@@ -207,7 +208,7 @@ in {
               phone = "";
               portable = "";
               car = "";
-              default = ["" ""];
+              default = [ "" "" ];
             };
             "on-click" = "pavucontrol";
           };
