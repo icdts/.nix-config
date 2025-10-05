@@ -24,6 +24,10 @@ in
       "flakes"
     ];
     warn-dirty = true;
+    secret-key-files = [
+      config.sops.secrets."build-key.sec".path
+    ];
+    trusted-public-keys = [ "rn-build-key-1:sPv68G4AoMOKjKbHbX8HL21esn+6R3Z9y1UnGNxvSyc=" ];
   };
 
   sops = {
@@ -31,6 +35,9 @@ in
     age.keyFile = "/var/lib/sops/key.txt";
     secrets = {
       "wifi.env" = { };
+      "build-key.sec" = {
+        path = "/var/lib/sops/build-key.sec";
+      };
     };
   };
 

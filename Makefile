@@ -23,4 +23,4 @@ sd-image:
 
 .PHONY: deploy-voron24
 deploy-voron24:
-	sudo nixos-rebuild switch --target-host rn@voron24.local --flake .#voron24
+	sudo nixos-rebuild switch --sudo --target-host rn@voron24.local --flake .#voron24
