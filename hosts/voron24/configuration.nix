@@ -18,13 +18,11 @@ in
     # wireless.networks.${wifi-ssid} = {
     # 	psk = wifi-psk;
     # };
+    firewall.allowedTCPPorts = [ 22 80 443 ];
   };
 
   services.klipper = {
     enable = true;
-    # Add this settings block to satisfy the module's assertion.
-    # This is just a placeholder and will be overridden by your
-    # full printer.cfg file once you create it.
     settings = {
       printer = {
         kinematics = "none";
