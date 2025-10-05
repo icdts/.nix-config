@@ -39,6 +39,7 @@ in
   boot.kernelPackages = syspkgs.linuxPackages_latest;
 
   networking = {
+    search = [ "local" ];
     networkmanager = {
       enable = true;
       ensureProfiles = {
