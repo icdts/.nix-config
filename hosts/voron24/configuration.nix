@@ -11,15 +11,11 @@ let
 in
 {
   networking = {
-    # networkmanager.enable = lib.mkForce false;
     hostName = "voron24";
-    # wireless.enable = true;
-    # wireless.interfaces = [ "wlan0" ];
-    # wireless.networks.${wifi-ssid} = {
-    # 	psk = wifi-psk;
-    # };
     firewall.allowedTCPPorts = [ 22 80 443 ];
   };
+
+  users.users.moonraker.extraGroups = [ "klipper" ];
 
   services.klipper = {
     enable = true;
@@ -33,6 +29,14 @@ in
   };
   services.moonraker = {
     enable = true;
+    settings = {
+      server.host = "0.0.0.0";
+      authorization.trusted_clients = [
+          "127.0.0.1"
+          "192.168.0.0/16"
+          "::1"
+      ];
+    };
   };
   services.fluidd.enable = true;
 

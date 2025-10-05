@@ -22,5 +22,5 @@ sd-image:
 	nix build .#nixosConfigurations.voron24.config.system.build.sdImage --out-link sdcard
 
 .PHONY: deploy-voron24
-deploy-voron24:
+deploy-voron24: sd-image
 	sudo nixos-rebuild switch --sudo --target-host rn@voron24.local --flake .#voron24
