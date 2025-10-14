@@ -1,44 +1,95 @@
 {
   config,
   pkgs,
-  lib,
   inputs,
   ...
 }:
 let
-  # wifi-ssid = config.sops.secrets.wifi-ssid;
-  # wifi-psk = config.sops.secrets.wifi-psk;
+  name = "voron24";
+  mDnsName = "${name}.local";
 in
 {
   networking = {
-    hostName = "voron24";
+    hostName = name;
     firewall.allowedTCPPorts = [ 22 80 443 ];
   };
 
-  users.users.moonraker.extraGroups = [ "klipper" ];
-
-  services.klipper = {
-    enable = true;
-    settings = {
-      printer = {
-        kinematics = "none";
-        max_velocity = 1;
-        max_accel = 1;
+  sops = {
+    secrets = {
+      "${name}-key.pem" = { 
+        owner = config.users.users.nginx.name; 
+        mode = "0400";
+      };
+      "${name}-crt.pem" = { 
+        owner = config.users.users.nginx.name; 
       };
     };
   };
-  services.moonraker = {
+
+  users.groups.klipper = {};
+  users.users.klipper = {
+    isNormalUser = false;
+    isSystemUser = true;
+    createHome = true;
+    home = "/var/lib/klipper";
+    group = "klipper";
+  };
+
+  services.klipper = {
     enable = true;
-    settings = {
-      server.host = "0.0.0.0";
-      authorization.trusted_clients = [
-          "127.0.0.1"
-          "192.168.0.0/16"
-          "::1"
-      ];
+    user = "klipper";
+    group = "klipper";
+    configFile = ./klipper.cfg;
+    logFile = "/var/lib/klipper/klipper.log";
+    firmwares = {
+      mcu = {
+        enable = true;
+        enableKlipperFlash = true;
+        configFile = ./octopus_v1.0.1.cfg;
+        serial = "/dev/serial/by-id/usb-STMicroelectronics_MARLIN_BIGTREE_OCTOPUS_V1_CDC_in_FS_Mode_319432623430-if00";
+      };
+      toolhead = {
+        enable = true;
+        enableKlipperFlash = true;
+        configFile = ./ebb36.v1.2.cfg;
+      };
+      u2c = {
+        enable = true;
+      };
     };
   };
-  services.fluidd.enable = true;
+
+  services.moonraker = {
+    enable = true;
+    address = "127.0.0.1";
+    settings = {
+      authorization = {
+        trusted_clients = [
+            "127.0.0.1"
+            "::1"
+        ];
+        cors_domains = [
+          "http://*.local"
+          "http://${name}"
+          "http://${mDnsName}"
+          "https://*.local"
+          "https://${name}"
+         "https://${mDnsName}"
+        ];
+      };
+    };
+  };
+  users.users.moonraker.extraGroups = [ "klipper" ];
+
+  services.fluidd = {
+    enable = true;
+    nginx = {
+      serverName = mDnsName;
+      serverAliases = [ name ];
+      sslCertificate = config.sops.secrets."${name}-crt.pem".certPath;
+      sslCertificateKey = config.sops.secrets."${name}-key.pem".keyPath;
+    };
+  };
 
   services.samba = {
     enable = true;
@@ -57,7 +108,7 @@ in
     # This rule creates a symlink /dev/print-board for your Octopus Pro.
     # To find the correct idVendor and idProduct:
     # 1. SSH into the Pi.
-    # 2. Run `lsusb` to see connected devices. Find your board in the list.
+    # 2. Run `lsusb`< to see connected devices. Find your board in the list.
     #    Example output: Bus 001 Device 005: ID 1d50:614e OpenMoko, Inc.
     # 3. Replace the values below with the ones you found.
     # The values "1d50" and "614e" are common for boards flashed with Klipper.
@@ -65,13 +116,12 @@ in
   '';
 
   environment.systemPackages = with pkgs; [
-    # Tools for building Klipper MCU firmware
-    # This is the compiler toolchain for ARM MCUs like the one on the Octopus Pro
     gcc-arm-embedded
-    # Required for `make menuconfig`
     kconfig-frontends
-    # Sometimes needed for flashing
     dfu-util
+    python3
+    pkgsCross.avr.buildPackages.gcc
+    pkgsCross.avr.buildPackages.gpp
   ];
 
   imports = [

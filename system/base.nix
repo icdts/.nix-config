@@ -38,7 +38,11 @@ in
       "build-key.sec" = {
         path = "/var/lib/sops/build-key.sec";
       };
+      "key.pem" = {};
+      "ca.pem" = {};
     };
+  };
+  sops.secrets = {
   };
 
   boot.loader.systemd-boot.enable = inputs.nixpkgs.lib.mkIf (system == "x86_64-linux") true;
@@ -118,9 +122,14 @@ in
     allowSFTP = true;
   };
 
-  security.sudo = {
-    wheelNeedsPassword = false;
-    enable = true;
+  security = {
+    sudo = {
+      wheelNeedsPassword = false;
+      enable = true;
+    };
+    pki = {
+      trustedCertificates.files = [ config.sops.secrets."ca.pem".path ];
+    };
   };
 
   users.mutableUsers = false;

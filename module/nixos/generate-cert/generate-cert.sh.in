@@ -1,0 +1,71 @@
+#!@shell@
+set -euo pipefail
+
+readonly CA_KEY="@caKeyFile@"
+readonly CA_CERT="@caCertFile@"
+readonly OPENSSL="@openssl@/bin/openssl"
+
+usage() {
+  echo "Usage: $0 <filename-prefix> <common-name> [subjectAltName1] [subjectAltName2] ..."
+  echo ""
+  echo "Example: $0 my-service my-service.homelab.local 192.168.1.50"
+  exit 1
+}
+
+if [[ "$#" -lt 2 ]]; then
+  usage
+fi
+
+readonly PREFIX="$1"; shift
+readonly CN="$1"; shift
+readonly SANS=("$@")
+
+# --- Main Logic ---
+echo "--> Generating private key: ${PREFIX}-key.pem"
+$OPENSSL genpkey -algorithm ED25519 -out "${PREFIX}-key.pem"
+
+echo "--> Generating SAN configuration file..."
+cat > san.conf <<EOF
+[req]
+distinguished_name = req_distinguished_name
+req_extensions = v3_req
+prompt = no
+
+[req_distinguished_name]
+CN = ${CN}
+
+[v3_req]
+subjectAltName = @alt_names
+
+[alt_names]
+EOF
+
+dns_count=1
+ip_count=1
+for san in "${SANS[@]}"; do
+  if [[ $san =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo "IP.${ip_count} = ${san}" >> san.conf
+    ((ip_count++))
+  else
+    echo "DNS.${dns_count} = ${san}" >> san.conf
+    ((dns_count++))
+  fi
+done
+
+echo "--> Generating Certificate Signing Request (CSR)..."
+$OPENSSL req -new -key "${PREFIX}-key.pem" -out "${PREFIX}.csr" -config san.conf
+
+echo "--> Signing certificate with the CA..."
+$OPENSSL x509 -req -in "${PREFIX}.csr" \
+  -CA "$CA_CERT" -CAkey "$CA_KEY" \
+  -CAcreateserial -out "${PREFIX}-cert.pem" \
+  -days 1825 -extensions v3_req -extfile san.conf
+
+# --- Cleanup ---
+rm san.conf "${PREFIX}.csr" "${CA_CERT}.srl"
+chmod 600 "${PREFIX}-key.pem"
+
+echo ""
+echo "Success! Generated files:"
+echo "- Certificate: ${PREFIX}-cert.pem"
+echo "- Private Key: ${PREFIX}-key.pem"

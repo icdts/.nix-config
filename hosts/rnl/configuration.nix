@@ -56,6 +56,8 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  custom.generate-cert.enable = true;
+
   imports = [
     # ../../module/laptop.nix
     ../../module/pipewire.nix
