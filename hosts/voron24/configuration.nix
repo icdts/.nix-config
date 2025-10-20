@@ -43,6 +43,9 @@ in
     group = "klipper";
   };
 
+  systemd.tmpfiles.rules = [
+    "L /var/lib/klipper/KAMP - - - - ${inputs.klipper-adaptive-meshing}/Configuration"
+  ];
   services.klipper = {
     enable = true;
     user = "klipper";
