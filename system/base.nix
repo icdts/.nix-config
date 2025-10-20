@@ -3,6 +3,7 @@
   pkgs,
   inputs,
   system,
+  lib,
   ...
 }:
 let
@@ -34,15 +35,21 @@ in
     defaultSopsFile = ../secrets.json;
     age.keyFile = "/var/lib/sops/key.txt";
     secrets = {
-      "wifi.env" = { };
       "build-key.sec" = {
         path = "/var/lib/sops/build-key.sec";
       };
-      "key.pem" = {};
-      "ca.pem" = {};
+      "key.pem" = {
+        owner = config.users.users.rn.name;
+      };
+      "ca.pem" = {
+        owner = config.users.users.rn.name;
+      };
     };
   };
-  sops.secrets = {
+
+  custom.generate-cert = {
+    caKeyFile = config.sops.secrets."key.pem".path;
+    caCertFile = config.sops.secrets."ca.pem".path;
   };
 
   boot.loader.systemd-boot.enable = inputs.nixpkgs.lib.mkIf (system == "x86_64-linux") true;
@@ -53,28 +60,9 @@ in
     search = [ "local" ];
     networkmanager = {
       enable = true;
-      ensureProfiles = {
-        environmentFiles = [
-          config.sops.secrets."wifi.env".path
-        ];
-        profiles = {
-          "home-wifi" = {
-            connection = {
-              id = "home-wifi";
-              type = "wifi";
-              interface-name = "wlp195s0";
-            };
-            wifi.ssid = "$HOME_SSID";
-            wifi-security = {
-              auth-alg = "open";
-              key-mgmt = "wpa-psk";
-              psk = "$HOME_PSK";
-            };
-          };
-        };
-      };
     };
   };
+  custom.home-wifi.enable = lib.mkDefault true;
 
   services.avahi = {
     enable = true;
@@ -127,9 +115,6 @@ in
       wheelNeedsPassword = false;
       enable = true;
     };
-    pki = {
-      trustedCertificates.files = [ config.sops.secrets."ca.pem".path ];
-    };
   };
 
   users.mutableUsers = false;
@@ -144,6 +129,7 @@ in
     git
     gnumake
   ];
+  environment.enableAllTerminfo = true;
   users.defaultUserShell = syspkgs.bash;
 
   fonts.enableDefaultPackages = true;

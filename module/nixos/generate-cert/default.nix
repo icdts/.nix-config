@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.custom.cert-generation;
+  cfg = config.custom.generate-cert;
 in
 {
-  options.custom.cert-generation = {
+  options.custom.generate-cert = {
     enable = lib.mkEnableOption "the custom certificate generation script";
 
     caKeyFile = lib.mkOption {
@@ -25,7 +25,7 @@ in
 
         scriptContent = builtins.replaceStrings
           [ "@shell@" "@openssl@" "@caKeyFile@" "@caCertFile@" ]
-          [ pkgs.runtimeShell pkgs.openssl cfg.caKeyFile cfg.caCertFile ]
+          [ pkgs.runtimeShell "${pkgs.openssl}" cfg.caKeyFile cfg.caCertFile ]
           template;
 
       in pkgs.writeShellScriptBin "generate-cert" scriptContent)

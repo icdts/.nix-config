@@ -2,6 +2,7 @@
   config,
   pkgs,
   inputs,
+  lib,
   ...
 }:
 let
@@ -11,22 +12,29 @@ in
 {
   networking = {
     hostName = name;
-    firewall.allowedTCPPorts = [ 22 80 443 ];
+    firewall.allowedTCPPorts = [
+      22
+      80
+      443
+    ];
+    useNetworkd = true;
+    networkmanager.enable = lib.mkForce false;
   };
+  systemd.network.enable = true;
 
   sops = {
     secrets = {
-      "${name}-key.pem" = { 
-        owner = config.users.users.nginx.name; 
+      "${name}-key.pem" = {
+        owner = config.users.users.nginx.name;
         mode = "0400";
       };
-      "${name}-crt.pem" = { 
-        owner = config.users.users.nginx.name; 
+      "${name}-crt.pem" = {
+        owner = config.users.users.nginx.name;
       };
     };
   };
 
-  users.groups.klipper = {};
+  users.groups.klipper = { };
   users.users.klipper = {
     isNormalUser = false;
     isSystemUser = true;
@@ -46,18 +54,60 @@ in
         enable = true;
         enableKlipperFlash = true;
         configFile = ./octopus_v1.0.1.cfg;
-        serial = "/dev/serial/by-id/usb-STMicroelectronics_MARLIN_BIGTREE_OCTOPUS_V1_CDC_in_FS_Mode_319432623430-if00";
+        serial = "/dev/serial/by-id/usb-Klipper_stm32f446xx_30005E001551303432323631-if00";
       };
       toolhead = {
-        enable = true;
+        enable = false;
         enableKlipperFlash = true;
         configFile = ./ebb36.v1.2.cfg;
-      };
-      u2c = {
-        enable = true;
+        serial = "canbus_uuid: 47ac67d94968";
       };
     };
   };
+
+  boot.kernelModules = [
+    "can"
+    "can-dev"
+    "can-raw"
+  ];
+  systemd.network = {
+    links = {
+      "10-can0" = {
+        matchConfig = {
+          OriginalName = "can0";
+        };
+        linkConfig = {
+          TransmitQueueLength = 1024;
+          MTUBytes = "16";
+        };
+      };
+    };
+
+    networks = {
+      "10-can0" = {
+        matchConfig = {
+          Name = "can0";
+        };
+        networkConfig = {
+          LinkLocalAddressing = "no";
+          ConfigureWithoutCarrier = true;
+        };
+        canConfig = {
+          BitRate = 500000;
+        };
+      };
+      "11-wired" = {
+        matchConfig = {
+          Name = "end0";
+        };
+        networkConfig = {
+          DHCP = "yes";
+          IPv6PrivacyExtensions = "kernel";
+        };
+      };
+    };
+  };
+  networking.wireless.iwd.enable = true;
 
   services.moonraker = {
     enable = true;
@@ -65,8 +115,8 @@ in
     settings = {
       authorization = {
         trusted_clients = [
-            "127.0.0.1"
-            "::1"
+          "127.0.0.1"
+          "::1"
         ];
         cors_domains = [
           "http://*.local"
@@ -74,8 +124,11 @@ in
           "http://${mDnsName}"
           "https://*.local"
           "https://${name}"
-         "https://${mDnsName}"
+          "https://${mDnsName}"
         ];
+      };
+      file_manager = {
+        enable_object_processing = true;
       };
     };
   };
@@ -91,18 +144,18 @@ in
     };
   };
 
-  services.samba = {
-    enable = true;
-    settings = {
-      gcode_files = {
-        path = "/var/lib/klipper/printer_data/gcodes";
-        "guest ok" = "yes";
-        "read only" = "no";
-        "force user" = "klipper"; # Ensures files have correct permissions
-        browseable = "yes";
-      };
-    };
-  };
+  # services.samba = {
+  #   enable = true;
+  #   settings = {
+  #     gcode_files = {
+  #       path = "/var/lib/klipper/printer_data/gcodes";
+  #       "guest ok" = "yes";
+  #       "read only" = "no";
+  #       "force user" = "klipper"; # Ensures files have correct permissions
+  #       browseable = "yes";
+  #     };
+  #   };
+  # };
 
   services.udev.extraRules = ''
     # This rule creates a symlink /dev/print-board for your Octopus Pro.
@@ -122,6 +175,9 @@ in
     python3
     pkgsCross.avr.buildPackages.gcc
     pkgsCross.avr.buildPackages.gpp
+    gcc
+    gpp
+    can-utils
   ];
 
   imports = [

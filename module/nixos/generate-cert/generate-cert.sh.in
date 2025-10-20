@@ -25,7 +25,7 @@ echo "--> Generating private key: ${PREFIX}-key.pem"
 $OPENSSL genpkey -algorithm ED25519 -out "${PREFIX}-key.pem"
 
 echo "--> Generating SAN configuration file..."
-cat > san.conf <<EOF
+cat > "${PREFIX}-san.conf" <<EOF
 [req]
 distinguished_name = req_distinguished_name
 req_extensions = v3_req
@@ -44,25 +44,25 @@ dns_count=1
 ip_count=1
 for san in "${SANS[@]}"; do
   if [[ $san =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    echo "IP.${ip_count} = ${san}" >> san.conf
+    echo "IP.${ip_count} = ${san}" >> "${PREFIX}-san.conf"
     ((ip_count++))
   else
-    echo "DNS.${dns_count} = ${san}" >> san.conf
+    echo "DNS.${dns_count} = ${san}" >> "${PREFIX}-san.conf"
     ((dns_count++))
   fi
 done
 
 echo "--> Generating Certificate Signing Request (CSR)..."
-$OPENSSL req -new -key "${PREFIX}-key.pem" -out "${PREFIX}.csr" -config san.conf
+$OPENSSL req -new -key "${PREFIX}-key.pem" -out "${PREFIX}.csr" -config "${PREFIX}-san.conf"
 
 echo "--> Signing certificate with the CA..."
 $OPENSSL x509 -req -in "${PREFIX}.csr" \
   -CA "$CA_CERT" -CAkey "$CA_KEY" \
-  -CAcreateserial -out "${PREFIX}-cert.pem" \
-  -days 1825 -extensions v3_req -extfile san.conf
+  -CAserial ${PREFIX}.srl -CAcreateserial -out "${PREFIX}-cert.pem" \
+  -days 1825 -extensions v3_req -extfile "${PREFIX}-san.conf"
 
 # --- Cleanup ---
-rm san.conf "${PREFIX}.csr" "${CA_CERT}.srl"
+rm "${PREFIX}-san.conf" "${PREFIX}.csr" "${PREFIX}.srl"
 chmod 600 "${PREFIX}-key.pem"
 
 echo ""

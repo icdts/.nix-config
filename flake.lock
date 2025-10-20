@@ -38,6 +38,22 @@
         "type": "github"
       }
     },
+    "klipper-adaptive-meshing": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1723517933,
+        "narHash": "sha256-05l1rXmjiI+wOj2vJQdMf/cwVUOyq5d21LZesSowuvc=",
+        "owner": "kyleisah",
+        "repo": "Klipper-Adaptive-Meshing-Purging",
+        "rev": "b0dad8ec9ee31cb644b94e39d4b8a8fb9d6c9ba0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kyleisah",
+        "repo": "Klipper-Adaptive-Meshing-Purging",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1759381078,
@@ -90,6 +106,7 @@
       "inputs": {
         "catppuccin": "catppuccin",
         "home-manager": "home-manager",
+        "klipper-adaptive-meshing": "klipper-adaptive-meshing",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-stable": "nixpkgs-stable",
         "sops-nix": "sops-nix"

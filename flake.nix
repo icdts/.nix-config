@@ -13,6 +13,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    klipper-adaptive-meshing = {
+      url = "github:kyleisah/Klipper-Adaptive-Meshing-Purging";
+      flake = false;
+    };
   };
 
   outputs =
@@ -22,6 +26,7 @@
       nixpkgs,
       catppuccin,
       sops-nix,
+      klipper-adaptive-meshing,
       ...
     }:
     let
