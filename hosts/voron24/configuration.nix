@@ -144,6 +144,9 @@ in
       serverAliases = [ name ];
       sslCertificate = config.sops.secrets."${name}-crt.pem".certPath;
       sslCertificateKey = config.sops.secrets."${name}-key.pem".keyPath;
+      extraConfig = ''
+        client_max_body_size 250M;
+      '';
     };
   };
 
