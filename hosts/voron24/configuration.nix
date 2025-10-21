@@ -133,6 +133,9 @@ in
       file_manager = {
         enable_object_processing = true;
       };
+      data_store = {
+        enable_database= true;
+      };
     };
   };
   users.users.moonraker.extraGroups = [ "klipper" ];
