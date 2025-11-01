@@ -184,6 +184,8 @@ in
     gcc
     gpp
     can-utils
+    python3.pkgs.numpy
+    python3.pkgs.matplotlib
   ];
 
   imports = [
