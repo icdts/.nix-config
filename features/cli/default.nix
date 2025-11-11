@@ -46,6 +46,7 @@ in
       ripgrep
       tldr
       zip
+      unzip
     ];
   };
 }
