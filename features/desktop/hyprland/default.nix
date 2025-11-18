@@ -27,7 +27,7 @@ let
     aoc = {
       description = "desc:AOC 2460G4 F61G4BA005375";
       resolution = "1920x1080@60";
-      position = "960x0";
+      position = "0x0";
       scale = "1";
       workspace = 2;
       primary = false;
@@ -35,7 +35,7 @@ let
     gigabyte = {
       description = "desc:GIGA-BYTE TECHNOLOGY CO. LTD. Gigabyte M32U 22181B001184";
       resolution = "3840x2160@144";
-      position = "2880x0";
+      position = "1920x0";
       scale = "1";
       workspace = 3;
       primary = false;
