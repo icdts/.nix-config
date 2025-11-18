@@ -2,14 +2,13 @@
   pkgs,
   lib,
   profile,
-  inputs,
   ...
 }:
 {
-  # imports = [
-  # inputs.catppuccin.homeModules.catppuccin
-  #   ./features
-  # ];
+  imports = [
+    ./cli
+    ./desktop
+  ];
 
   home.packages = with pkgs; [ git ];
   home.stateVersion = "24.05";

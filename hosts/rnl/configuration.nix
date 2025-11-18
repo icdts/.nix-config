@@ -57,12 +57,9 @@
   nixpkgs.config.allowUnfree = true;
 
   custom.generate-cert.enable = true;
+  custom.nvidia-prime.enable = true;
+  custom.pipewire.enable = true;
+  custom.steam.enable = true;
 
-  imports = [
-    # ../../module/laptop.nix
-    ../../module/pipewire.nix
-    ../../module/enable-nvidia-prime.nix
-    ../../module/steam.nix
-    #../../module/disable-nvidia.nix
-  ];
+  imports = [];
 }

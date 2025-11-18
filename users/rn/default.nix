@@ -27,8 +27,7 @@
   home-manager.users.rn = {
     imports = [
       inputs.catppuccin.homeModules.catppuccin
-      ../../features
-      ../../home.nix
+      ../../module/home-manager
     ];
   };
 }
