@@ -25,3 +25,13 @@ sd-image:
 .PHONY: deploy-voron24
 deploy-voron24: sd-image
 	sudo nixos-rebuild switch --sudo --target-host rn@voron24.local --flake .#voron24
+
+
+.PHONY: sd-image-home-assistant
+sd-image-home-assistant:
+	nix build .#nixosConfigurations.home-assistant.config.system.build.sdImage --out-link sdcard-home-assistant
+	readlink -f ./sdcard-home-assistant
+
+.PHONY: deploy-home-assistant
+deploy-home-assistant:
+	sudo nixos-rebuild switch --sudo --target-host rn@home-assistant.local --flake .#home-assistant

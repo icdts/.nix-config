@@ -21,7 +21,7 @@
   custom.cli.enable = true;
   custom.desktop.enable = lib.mkIf profile.graphical true;
 
-  targets.genericLinux.enable = true;
+  # targets.genericLinux.enable = true;
 
   nixpkgs = {
     config = {
