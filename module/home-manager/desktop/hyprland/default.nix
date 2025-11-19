@@ -78,6 +78,10 @@ in
         "$terminal" = "ghostty";
         env = [
           "XCURSOR_SIZE,24"
+          "XCURSOR_THEME,catppuccin-latte-light-cursors"
+          "HYPRCURSOR_SIZE,24"
+          "HYPRCURSOR_THEME,catppuccin-latte-light-cursors"
+
           "QT_QPA_PLATFORMTHEME,qt6ct"
           "AQ_DRM_DEVICES,/dev/dri/card1"
           "WGPU_DRM_DEVICES,/dev/dri/card1"

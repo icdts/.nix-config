@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 let
   cfg = config.custom.desktop;
@@ -53,6 +53,14 @@ in
           "NotoMono Nerd Font"
         ];
       };
+    };
+
+    home.pointerCursor = {
+      gtk.enable = true;
+      x11.enable = true;
+      name = "catppuccin-latte-light-cursors";
+      package = pkgs.catppuccin-cursors.latteLight;
+      size = 24;
     };
   };
 }
