@@ -59,12 +59,12 @@ in
         configFile = ./octopus_v1.0.1.cfg;
         serial = "/dev/serial/by-id/usb-Klipper_stm32f446xx_30005E001551303432323631-if00";
       };
-      toolhead = {
-        enable = false;
-        enableKlipperFlash = true;
-        configFile = ./ebb36.v1.2.cfg;
-        serial = "canbus_uuid: 47ac67d94968";
-      };
+      # toolhead = {
+      #   enable = false;
+      #   enableKlipperFlash = true;
+      #   configFile = ./ebb36.v1.2.cfg;
+      #   serial = "/dev/ebb36";
+      # };
     };
   };
 
@@ -171,7 +171,7 @@ in
     #    Example output: Bus 001 Device 005: ID 1d50:614e OpenMoko, Inc.
     # 3. Replace the values below with the ones you found.
     # The values "1d50" and "614e" are common for boards flashed with Klipper.
-    SUBSYSTEM=="tty", ATTRS{idVendor}=="1d50", ATTRS{idProduct}=="614e", SYMLINK+="print-board"
+    SUBSYSTEM=="tty", ATTRS{idVendor}=="1d50", ATTRS{idProduct}=="614e", SYMLINK+="octupus"
   '';
 
   environment.systemPackages = with pkgs; [

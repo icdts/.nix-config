@@ -24,6 +24,7 @@
 
   environment.systemPackages = with pkgs; [
     networkmanagerapplet
+    orca-slicer
   ];
   programs.nm-applet.enable = true;
   programs.adb.enable = true;
