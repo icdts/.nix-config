@@ -35,3 +35,7 @@ sd-image-home-assistant:
 .PHONY: deploy-home-assistant
 deploy-home-assistant:
 	sudo nixos-rebuild switch --sudo --target-host rn@home-assistant.local --flake .#home-assistant
+
+.PHONY: deploy-living-room
+deploy-living-room:
+	sudo nixos-rebuild switch --sudo --target-host rn@living-room.local --flake .#living-room

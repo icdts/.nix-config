@@ -11,6 +11,18 @@
     configuration = ./rnl/configuration.nix;
   };
 
+  living-room = {
+    system = "x86_64-linux";
+    profile = {
+      type = "desktop";
+      graphical = true;
+      hostname = "living-room";
+    };
+
+    hardware = ./living-room/hardware-configuration.nix;
+    configuration = ./living-room/configuration.nix;
+  };
+
   voron24 = {
     system = "aarch64-linux";
     profile = {

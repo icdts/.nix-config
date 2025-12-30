@@ -105,7 +105,13 @@ in
     enable = true;
     settings = {
       PermitRootLogin = "no";
-      AcceptEnv = "TERM LANG LC_* LANGUAGE COLORTERM";
+      AcceptEnv = [
+        "TERM"
+        "LANG"
+        "LC_*"
+        "LANGUAGE"
+        "COLORTERM"
+      ];
     };
     allowSFTP = true;
   };
