@@ -17,6 +17,7 @@
       type = "desktop";
       graphical = true;
       hostname = "living-room";
+      useJovian = true;
     };
 
     hardware = ./living-room/hardware-configuration.nix;

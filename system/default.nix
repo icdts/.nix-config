@@ -26,5 +26,6 @@ inputs.nixpkgs.lib.nixosSystem {
       home-manager.extraSpecialArgs = { inherit inputs profile; };
     }
     inputs.catppuccin.nixosModules.catppuccin
-  ];
+  ]
+  ++ (if profile.useJovian then [ inputs.jovian-nixos.nixosModules.default ] else []);
 }

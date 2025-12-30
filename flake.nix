@@ -17,6 +17,7 @@
       url = "github:kyleisah/Klipper-Adaptive-Meshing-Purging";
       flake = false;
     };
+    jovian-nixos.url = "github:Jovian-Experiments/Jovian-NixOS";
   };
 
   outputs =
@@ -27,6 +28,7 @@
       catppuccin,
       sops-nix,
       klipper-adaptive-meshing,
+      jovian-nixos,
       ...
     }:
     let
