@@ -25,9 +25,9 @@
   environment.systemPackages = with pkgs; [
     networkmanagerapplet
     orca-slicer
+    android-tools
   ];
   programs.nm-applet.enable = true;
-  programs.adb.enable = true;
 
   services.fstrim.enable = true; # ssd health
 

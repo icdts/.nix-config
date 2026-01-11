@@ -10,7 +10,7 @@
     kernelModules = [
       "amdgpu"
     ];
-    kernelPArams = [
+    kernelParams = [
       "amdgpu.sg_display=0"
     ];
     binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -20,8 +20,8 @@
   environment.systemPackages = with pkgs; [
     networkmanagerapplet
     orca-slicer
+    android-tools
   ];
-  programs.adb.enable = true;
 
   services.fstrim.enable = true; # ssd health
 
@@ -58,7 +58,7 @@
 
   # Enable Plasma for when you "Switch to Desktop"
   services.desktopManager.plasma6.enable = true;
-  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.enable = false;
 
 
 

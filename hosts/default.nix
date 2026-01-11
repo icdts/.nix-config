@@ -5,6 +5,7 @@
       type = "desktop";
       graphical = true;
       hostname = "rnl";
+      useJovian = false;
     };
 
     hardware = ./rnl/hardware-configuration.nix;
@@ -30,6 +31,7 @@
       type = "server";
       graphical = false;
       hostname = "voron24";
+      useJovian = false;
     };
     hardware = ./voron24/hardware-configuration.nix;
     configuration = ./voron24/configuration.nix;
@@ -41,6 +43,7 @@
       type = "server";
       graphical = false;
       hostname = "home-assistant";
+      useJovian = false;
     };
     hardware = ./home-assistant/hardware-configuration.nix;
     configuration = ./home-assistant/configuration.nix;
