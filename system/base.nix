@@ -142,5 +142,7 @@ in
   fonts.packages = with syspkgs; [
     nerd-fonts.fira-code
     nerd-fonts.noto
+    noto-fonts-cjk-sans
+    noto-fonts-color-emoji
   ];
 }

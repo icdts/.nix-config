@@ -33,7 +33,7 @@ sd-image-home-assistant:
 	readlink -f ./sdcard-home-assistant
 
 .PHONY: deploy-home-assistant
-deploy-home-assistant:
+deploy-home-assistant: sd-image-home-assistant
 	sudo nixos-rebuild switch --sudo --target-host rn@home-assistant.local --flake .#home-assistant
 
 .PHONY: deploy-living-room

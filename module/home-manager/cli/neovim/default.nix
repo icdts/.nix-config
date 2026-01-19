@@ -21,6 +21,8 @@ in
       plugins = with pkgs.vimPlugins; [
         catppuccin-nvim # coloring
         nvim-treesitter.withAllGrammars # syntax highlighting`
+        #nvim-treesitter
+        plenary-nvim
         which-key-nvim # popup showing what key presses do what
         indent-blankline-nvim # highlighting indent
         nvim-lspconfig # lsp integration
