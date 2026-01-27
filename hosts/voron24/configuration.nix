@@ -193,4 +193,5 @@ in
   ];
 
   sdImage.compressImage = false;
+  boot.supportedFilesystems = lib.mkForce [ "vfat" "ext4" ];
 }
