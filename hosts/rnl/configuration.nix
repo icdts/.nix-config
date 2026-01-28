@@ -26,6 +26,7 @@
     networkmanagerapplet
     orca-slicer
     android-tools
+    obsidian
   ];
   programs.nm-applet.enable = true;
 

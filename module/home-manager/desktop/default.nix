@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
 let
   cfg = config.custom.desktop;
@@ -14,13 +19,33 @@ in
   };
 
   config = mkIf cfg.enable {
-    xdg.portal.config.common.default = "*";
+    xdg.portal = {
+      enable = true;
+      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+      config.common.default = "*";
+    };
+
+    dconf.settings = {
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+      };
+    };
+
     custom.desktop.hyprland.enable = true;
     custom.desktop.wayland.enable = true;
-    catppuccin.ghostty = {
-      enable = true;
-      flavor = "mocha";
+    catppuccin = {
+      ghostty = {
+        enable = true;
+        flavor = "mocha";
+      };
     };
+
+    gtk = {
+      enable = true;
+      gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
+      gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+    };
+
     programs = {
       google-chrome.enable = true;
       firefox.enable = true;
