@@ -68,6 +68,7 @@ in
 
     wayland.windowManager.hyprland = {
       enable = true;
+      systemd.enable = false;
       settings = {
         monitor = hyprlandMonitorConfig;
         workspace = hyprlandWorkspaceConfig;
@@ -122,13 +123,11 @@ in
         master = {
           mfact = 0.80;
         };
-        windowrulev2 = [
-          "suppressevent maximize, class:.*"
-          "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
-          "workspace 3, class:com.mitchellh.ghostty, title:ghostty-workspace3"
-          "workspace 2, class:google-chrome, initialTitle:chrome-workspace2"
-          "workspace 2, class:chrome-www.destiny.gg__embed_chat-Default"
-          "workspace 3, class:google-chrome, title:chrome-workspace3"
+        windowrule = [
+          "workspace 3, match:class com.mitchellh.ghostty, match:title ghostty-workspace3"
+          "workspace 2, match:class google-chrome, match:initial_title chrome-workspace2"
+          "workspace 2, match:class chrome-www.destiny.gg__embed_chat-Default"
+          "workspace 3, match:class google-chrome, match:title chrome-workspace3"
         ];
         bindel = [
           ",XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
