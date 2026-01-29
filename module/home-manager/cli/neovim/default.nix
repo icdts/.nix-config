@@ -36,7 +36,7 @@ in
         cmp-cmdline # vim's command line completion
         cmp-nvim-lsp # completion sourced from lsp
       ];
-      extraLuaConfig = builtins.readFile ./init.lua;
+      initLua = builtins.readFile ./init.lua;
     };
     home.file = {
       ".config/nvim/lua" = {
