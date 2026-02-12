@@ -52,7 +52,7 @@ in
       ccls
       ruby-lsp
       gopls
-      zls
+      # zls
       lua-language-server
       nixd
       nixfmt

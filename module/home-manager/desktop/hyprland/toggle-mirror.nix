@@ -46,7 +46,7 @@ pkgs.writeShellApplication {
   name = "toggle-mirror";
   runtimeInputs = [
     pkgs.jq
-    pkgs.hyprland
+    # pkgs.hyprland
     pkgs.libnotify
   ];
   text = ''
