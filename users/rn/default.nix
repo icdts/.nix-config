@@ -16,6 +16,7 @@
       "networkmanager"
       "audio"
       "video"
+      "cdrom"
       "input"
       "adbusers"
     ];
