@@ -59,6 +59,10 @@ in
         server_port = 8123;
       };
       wake_on_lan = { };
+      
+      # Tell Home Assistant to manage these via the UI
+      scene = "!include scenes.yaml";
+      automation = "!include automations.yaml";
     };
   };
   services.esphome.enable = true;
