@@ -34,7 +34,7 @@
   services.blueman.enable = true;
 
   powerManagement.enable = true;
-  powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
+  # powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
   services.auto-cpufreq.enable = false;
   services.tlp.enable = false;
 
@@ -58,7 +58,12 @@
 
   # Enable Plasma for when you "Switch to Desktop"
   services.desktopManager.plasma6.enable = true;
-  services.displayManager.sddm.enable = false;
+  # services.displayManager.sddm.enable = false;
+
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
 
   imports = [];
 }

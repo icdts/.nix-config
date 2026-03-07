@@ -1,5 +1,5 @@
 .PHONY: all
-all: clean update build switch
+all: update build switch clean
 
 .PHONY: update
 update:
@@ -38,4 +38,4 @@ deploy-home-assistant: sd-image-home-assistant
 
 .PHONY: deploy-living-room
 deploy-living-room:
-	sudo nixos-rebuild switch --sudo --target-host rn@living-room.local --flake .#living-room
+	sudo nixos-rebuild switch --sudo --target-host rn@living-room.local --build-host rn@living-room.local --flake .#living-room

@@ -17,18 +17,34 @@ in
     ../users/rn/default.nix
   ];
 
-  nix.settings = {
-    trusted-users = [ "@wheel" ];
-    auto-optimise-store = true;
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    warn-dirty = true;
-    secret-key-files = [
-      config.sops.secrets."build-key.sec".path
-    ];
-    trusted-public-keys = [ "rn-build-key-1:sPv68G4AoMOKjKbHbX8HL21esn+6R3Z9y1UnGNxvSyc=" ];
+  nix = {
+    distributedBuilds = true;
+    buildMachines = [{
+      hostName = "living-room.local"; # Or use its IP address if DNS isn't set up
+      sshUser = "rn";
+      protocol = "ssh-ng";
+      # Tell the client this builder can handle both x86 and ARM builds
+      systems = [ "x86_64-linux" "aarch64-linux" ];
+      maxJobs = 8; # Adjust based on how many cores you want to allocate on the AMD chip
+      speedFactor = 2;
+      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+    }];
+    extraOptions = ''
+      builders-use-substitutes = true
+    '';
+    settings = {
+      trusted-users = [ "@wheel" ];
+      auto-optimise-store = true;
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      warn-dirty = true;
+      secret-key-files = [
+        config.sops.secrets."build-key.sec".path
+      ];
+      trusted-public-keys = [ "rn-build-key-1:sPv68G4AoMOKjKbHbX8HL21esn+6R3Z9y1UnGNxvSyc=" ];
+    };
   };
 
   sops = {
