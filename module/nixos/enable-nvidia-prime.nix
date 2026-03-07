@@ -32,14 +32,14 @@ in
           enableOffloadCmd = true;
         };
         amdgpuBusId = "PCI:197:0:0"; # c5:00.0
-        nvidiaBusId = "PCI:198:0:0"; # c4:00.0
+        nvidiaBusId = "PCI:196:0:0"; # c4:00.0
       };
       powerManagement = {
         enable = false;
         finegrained = true;
       };
 
-      dynamicBoost.enable = lib.mkDefault true;
+      dynamicBoost.enable = lib.mkDefault false;
     };
   };
 }
