@@ -42,7 +42,7 @@ in
         * {
             border: none;
             border-radius: 0;
-            font-family: "FiraMono";
+            font-family: "FiraCode Nerd Font", "NotoSansM Nerd Font", sans-serif;
             font-size: 13px;
             min-height: 0;
         }
@@ -54,7 +54,7 @@ in
 
         #window {
             font-weight: bold;
-            font-family: "FiraMono";
+            font-family: "FiraCode Nerd Font", "NotoSansM Nerd Font", sans-serif;
         }
 
         #workspaces button {
@@ -162,7 +162,7 @@ in
               "3:term" = "";
               "4:work" = "";
               "5:music" = "";
-              "6:docs" = "";
+              "6:docs" = "󰈙";
               urgent = "";
               focused = "";
               default = "";
@@ -225,8 +225,8 @@ in
             "format-muted" = "";
             "format-icons" = {
               headphones = "";
-              handsfree = "";
-              headset = "";
+              handsfree = "󰋎";
+              headset = "󰋎";
               phone = "";
               portable = "";
               car = "";
