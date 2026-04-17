@@ -37,6 +37,9 @@ in
         cmp-nvim-lsp # completion sourced from lsp
       ];
       initLua = builtins.readFile ./init.lua;
+
+      withRuby = false;
+      withPython3 = false;
     };
     home.file = {
       ".config/nvim/lua" = {
