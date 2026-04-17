@@ -32,7 +32,7 @@
 * {
     border: none;
     border-radius: 0;
-    font-family: "FiraMono";
+    font-family: "FiraCode Nerd Font", "NotoSansM Nerd Font", sans-serif;
     font-size: 13px;
     min-height: 0;
 }
@@ -44,7 +44,7 @@ window#waybar {
 
 #window {
     font-weight: bold;
-    font-family: "FiraMono";
+    font-family: "FiraCode Nerd Font", "NotoSansM Nerd Font", sans-serif;
 }
 
 #workspaces button {
