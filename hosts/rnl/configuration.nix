@@ -35,9 +35,11 @@
   hardware.bluetooth.enable = true; # enables support for Bluetooth
 
   programs.hyprland = {
-    enable = true;
+    enable = false;
     withUWSM = true;
   };
+  services.desktopManager.plasma6.enable = true;
+  services.displayManager.sddm.enable = true;
   services.blueman.enable = true;
 
   services.asusd.enable = true;

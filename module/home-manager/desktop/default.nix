@@ -31,9 +31,11 @@ in
       };
     };
 
-    custom.desktop.hyprland.enable = true;
+    custom.desktop.hyprland.enable = false;
     custom.desktop.wayland.enable = true;
     catppuccin = {
+      enable = true;
+      autoEnable = true;
       ghostty = {
         enable = true;
         flavor = "mocha";
