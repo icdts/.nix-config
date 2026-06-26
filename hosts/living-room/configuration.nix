@@ -56,6 +56,40 @@
     devices.steamdeck.enable = false; # Set to false since this is a desktop
   };
 
+  fileSystems."/mnt/sharedrive" = {
+    device = "/dev/disk/by-label/sharedrive";
+    fsType = "ext4";
+  };
+
+  services.samba = {
+    enable = true;
+    openFirewall = true; # Automatically opens ports 137, 138, 139, 445
+    settings = {
+      global = {
+        "workgroup" = "WORKGROUP";
+        "server string" = "living-room Samba Server";
+        "netbios name" = "living-room";
+        "security" = "user";
+      };
+      # The name of the share as it will appear in Windows
+      "living-room Drive" = {
+        path = "/mnt/sharedrive";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "rn";
+        "force group" = "users";
+      };
+    };
+  };
+
+  services.samba-wsdd = {
+    enable = true;
+    openFirewall = true;
+  };
+
   # Enable Plasma for when you "Switch to Desktop"
   services.desktopManager.plasma6.enable = true;
   # services.displayManager.sddm.enable = false;
