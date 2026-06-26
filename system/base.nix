@@ -80,9 +80,11 @@ in
   };
   custom.home-wifi.enable = lib.mkDefault true;
 
+  services.printing.enable = true;
   services.avahi = {
     enable = true;
     nssmdns4 = true;
+    openFirewall = true;
     publish = {
       enable = true;
       addresses = true;
