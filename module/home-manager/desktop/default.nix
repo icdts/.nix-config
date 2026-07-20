@@ -51,7 +51,10 @@ in
 
     programs = {
       google-chrome.enable = true;
-      firefox.enable = true;
+      firefox = {
+        enable = true;
+        configPath = "${config.xdg.configHome}/mozilla/firefox";
+      };
       ghostty = {
         enable = true;
         enableZshIntegration = true;

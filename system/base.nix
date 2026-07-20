@@ -146,6 +146,7 @@ in
   system.stateVersion = "24.05";
   catppuccin = {
     enable = true;
+    autoEnable = true;
     flavor = "mocha";
   };
 

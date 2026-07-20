@@ -28,7 +28,6 @@
     android-tools
     obsidian
   ];
-  programs.nm-applet.enable = true;
 
   services.fstrim.enable = true; # ssd health
 
