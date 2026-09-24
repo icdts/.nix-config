@@ -52,6 +52,9 @@ in
       "androidtv_remote"
       "ecobee"
       "airgradient"
+      
+      "brother"
+      "ipp"
     ];
     config = {
       default_config = { };
@@ -59,7 +62,7 @@ in
         server_port = 8123;
       };
       wake_on_lan = { };
-      
+
       # Tell Home Assistant to manage these via the UI
       scene = "!include scenes.yaml";
       automation = "!include automations.yaml";
@@ -78,8 +81,10 @@ in
     wakeonlan # Required to turn on LG TV over network
   ];
 
-  
-  boot.supportedFilesystems = lib.mkForce [ "ext4" "vfat" ];
+  boot.supportedFilesystems = lib.mkForce [
+    "ext4"
+    "vfat"
+  ];
 
   imports = [
     (inputs.nixpkgs + "/nixos/modules/installer/sd-card/sd-image-aarch64.nix")
