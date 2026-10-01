@@ -154,7 +154,7 @@ in
     git
     gnumake
   ];
-  environment.enableAllTerminfo = true;
+  environment.enableAllTerminfo = false;
   users.defaultUserShell = syspkgs.bash;
 
   fonts.enableDefaultPackages = true;
