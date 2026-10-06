@@ -15,7 +15,7 @@
     ];
     binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
-  swapDevices = [ { device = "/dev/nvme0n1p3"; } ];
+  swapDevices = [ { device = "/dev/disk/by-uuid/2cd5f388-92f9-47c2-812c-53016357de2c"; } ];
 
   environment.systemPackages = with pkgs; [
     networkmanagerapplet
@@ -59,6 +59,11 @@
   fileSystems."/mnt/sharedrive" = {
     device = "/dev/disk/by-label/sharedrive";
     fsType = "ext4";
+    options = [
+      "noauto"
+      "x-systemd.automount"
+      "x-systemd.idle-timeout=60"
+    ];
   };
 
   services.samba = {
