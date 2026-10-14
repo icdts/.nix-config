@@ -60,6 +60,9 @@ in
       "ca.pem" = {
         owner = config.users.users.rn.name;
       };
+      "google-api-key" = {
+        owner = config.users.users.rn.name;
+      };
     };
   };
 
