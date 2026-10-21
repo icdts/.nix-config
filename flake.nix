@@ -18,6 +18,7 @@
       flake = false;
     };
     jovian-nixos.url = "github:Jovian-Experiments/Jovian-NixOS";
+    llm-agents.url = "github:numtide/llm-agents.nix";
   };
 
   outputs =
@@ -29,6 +30,7 @@
       sops-nix,
       klipper-adaptive-meshing,
       jovian-nixos,
+      llm-agents,
       ...
     }:
     let

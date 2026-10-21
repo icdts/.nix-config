@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   config,
   lib,
@@ -23,6 +24,10 @@ in
       extraPackages = with pkgs; [
         curl
         ripgrep
+
+        #ai
+        nodejs_22 # Needed when you run :Copilot auth
+        inputs.llm-agents.packages.${pkgs.system}.antigravity-cli
       ];
 
       plugins = with pkgs.vimPlugins; [
@@ -44,6 +49,7 @@ in
         cmp-nvim-lsp # completion sourced from lsp
 
         # AI Chat & Inline Assistant
+        copilot-lua
         codecompanion-nvim
       ];
       initLua = builtins.readFile ./init.lua;
