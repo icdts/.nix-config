@@ -20,14 +20,14 @@ in
       viAlias = true;
       vimAlias = true;
 
-      # Scoped strictly to Neovim's PATH for CodeCompanion's HTTP calls & search tools
+      # Scoped strictly to Neovim's PATH for CLI AI agents & search tools
       extraPackages = with pkgs; [
         curl
         ripgrep
 
-        #ai
-        nodejs_22 # Needed when you run :Copilot auth
+        # AI CLI Agents
         inputs.llm-agents.packages.${pkgs.system}.antigravity-cli
+        inputs.llm-agents.packages.${pkgs.system}.copilot-cli
       ];
 
       plugins = with pkgs.vimPlugins; [
@@ -47,10 +47,6 @@ in
         cmp-path # completion of filesystem paths
         cmp-cmdline # vim's command line completion
         cmp-nvim-lsp # completion sourced from lsp
-
-        # AI Chat & Inline Assistant
-        copilot-lua
-        codecompanion-nvim
       ];
       initLua = builtins.readFile ./init.lua;
 
