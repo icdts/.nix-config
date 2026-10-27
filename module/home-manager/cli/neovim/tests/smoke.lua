@@ -41,7 +41,9 @@ local expected_n_maps = {
 	[" sg"] = "Telescope live_grep (<leader>sg)",
 	[" ac"] = "AI CLI toggle (<leader>ac)",
 	[" as"] = "AI CLI select agent (<leader>as)",
-	["<C-G>"] = "AI CLI toggle (<C-g>)",
+	["<M-a>"] = "AI CLI toggle (<A-a>)",
+	["<M-h>"] = "Window focus left (<A-h>)",
+	["<M-l>"] = "Window focus right (<A-l>)",
 	["<C-K>"] = "Quickfix next (<C-k>)",
 	["<C-J>"] = "Quickfix prev (<C-j>)",
 	[" k"] = "Location list next (<leader>k)",
@@ -76,9 +78,16 @@ local expected_bins = {
 	"lua-language-server",
 	"nixd",
 	"nixfmt",
-	"agy",
-	"copilot",
 }
+
+local ai_bins_env = vim.env.EXPECTED_AI_BINS
+if ai_bins_env == nil then
+	ai_bins_env = "agy,copilot"
+end
+for bin in string.gmatch(ai_bins_env, "([^,]+)") do
+	table.insert(expected_bins, bin)
+end
+
 for _, bin in ipairs(expected_bins) do
 	check(vim.fn.executable(bin) == 1, "Executable in PATH: " .. bin)
 end

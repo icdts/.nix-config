@@ -74,19 +74,24 @@ map("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
 map("n", "<leader>ds", builtin.lsp_document_symbols, { desc = "[D]ocument [S]ymbols" })
 map("n", "<leader>ws", builtin.lsp_dynamic_workspace_symbols, { desc = "[W]orkspace [S]ymbols" })
 
+-- Window navigation (from :help terminal-input)
+map({ "t", "i" }, "<A-h>", "<C-\\><C-N><C-w>h", { desc = "Move focus to left window" })
+map({ "t", "i" }, "<A-j>", "<C-\\><C-N><C-w>j", { desc = "Move focus to lower window" })
+map({ "t", "i" }, "<A-k>", "<C-\\><C-N><C-w>k", { desc = "Move focus to upper window" })
+map({ "t", "i" }, "<A-l>", "<C-\\><C-N><C-w>l", { desc = "Move focus to right window" })
+map("n", "<A-h>", "<C-w>h", { desc = "Move focus to left window" })
+map("n", "<A-j>", "<C-w>j", { desc = "Move focus to lower window" })
+map("n", "<A-k>", "<C-w>k", { desc = "Move focus to upper window" })
+map("n", "<A-l>", "<C-w>l", { desc = "Move focus to right window" })
+
 -- AI CLI Sidebar
 local ai = require("config.ai")
 map("n", "<leader>ac", ai.toggle, { desc = "Toggle AI CLI Sidebar (agy / copilot)" })
-map("n", "<C-g>", ai.toggle, { desc = "Toggle AI CLI Sidebar (agy / copilot)" })
+map({ "n", "i", "v", "t" }, "<A-a>", function()
+	vim.cmd("stopinsert")
+	ai.toggle()
+end, { desc = "Toggle AI CLI Sidebar (agy / copilot)" })
 map("n", "<leader>as", ai.select_agent, { desc = "Select AI CLI Agent (agy / copilot)" })
-
-ai.on_term_buf = function(buf)
-	map("t", "<C-h>", "<C-\\><C-n><C-w>h", { buffer = buf, desc = "Jump left to code buffer" })
-	map("t", "<C-g>", function()
-		vim.cmd("stopinsert")
-		ai.toggle()
-	end, { buffer = buf, desc = "Hide AI Sidebar" })
-end
 
 local ok, wk = pcall(require, "which-key")
 if ok and wk.add then

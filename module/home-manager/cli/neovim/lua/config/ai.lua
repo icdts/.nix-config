@@ -6,8 +6,8 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
 	command = "silent! checktime",
 })
 
--- CLI AI Agents Definition (Antigravity for Home, GitHub Copilot CLI for Work WSL)
-local agents = {
+-- CLI AI Agents Definition (filtered dynamically to agents installed in PATH)
+local all_agents = {
 	{
 		label = "Antigravity CLI (agy)      [Google AI Pro]",
 		cmd = "agy",
@@ -18,8 +18,25 @@ local agents = {
 	},
 }
 
+local agents = {}
+for _, agent in ipairs(all_agents) do
+	if vim.fn.executable(agent.cmd) == 1 then
+		table.insert(agents, agent)
+	end
+end
+if #agents == 0 then
+	agents = all_agents
+end
+
 local is_wsl = vim.fn.has("wsl") == 1
-local current_agent = is_wsl and agents[2] or agents[1]
+local preferred_cmd = is_wsl and "copilot" or "agy"
+local current_agent = agents[1]
+for _, agent in ipairs(agents) do
+	if agent.cmd == preferred_cmd then
+		current_agent = agent
+		break
+	end
+end
 
 -- Store a persistent terminal buffer per agent so switching doesn't kill active sessions
 local agent_bufs = {}

@@ -9,6 +9,7 @@ with lib;
 let
   cfg = config.custom.cli.neovim;
   system = pkgs.stdenv.hostPlatform.system;
+  hasLlmAgents = inputs.llm-agents.packages ? ${system};
 
   # Bundle local ./lua and ./after/ftplugin directories as a Neovim plugin
   # so they live in /nix/store on Neovim's runtimepath.
@@ -25,6 +26,23 @@ let
     };
   };
 
+  agentDefs = [
+    {
+      enabled = cfg.agents.antigravity;
+      bin = "agy";
+      pkg = inputs.llm-agents.packages.${system}.antigravity-cli;
+    }
+    {
+      enabled = cfg.agents.copilot;
+      bin = "copilot";
+      pkg = inputs.llm-agents.packages.${system}.copilot-cli;
+    }
+  ];
+
+  enabledAgents = optionals (hasLlmAgents && cfg.agents.enable) (
+    filter (a: a.enabled) agentDefs
+  );
+
   extraPackages =
     with pkgs;
     [
@@ -40,11 +58,9 @@ let
       nixd
       nixfmt
     ]
-    ++ pkgs.lib.optionals (inputs.llm-agents.packages ? ${system}) [
-      # AI CLI Agents
-      inputs.llm-agents.packages.${system}.antigravity-cli
-      inputs.llm-agents.packages.${system}.copilot-cli
-    ];
+    ++ map (a: a.pkg) enabledAgents;
+
+  expectedAiBins = map (a: a.bin) enabledAgents;
 
   plugins = with pkgs.vimPlugins; [
     icdts-nvim-config
@@ -79,6 +95,9 @@ let
         "PATH"
         ":"
         (pkgs.lib.makeBinPath extraPackages)
+        "--set"
+        "NVIM_AI_AGENTS"
+        (concatStringsSep "," expectedAiBins)
       ];
     }).overrideAttrs
       (old: {
@@ -92,7 +111,26 @@ let
       });
 in
 {
-  options.custom.cli.neovim.enable = mkEnableOption "neovim";
+  options.custom.cli.neovim = {
+    enable = mkEnableOption "neovim";
+    agents = {
+      enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Master toggle for all AI CLI agents and Neovim AI sidebar integration.";
+      };
+      antigravity = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to bundle Antigravity CLI (agy) into Neovim's PATH.";
+      };
+      copilot = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to bundle GitHub Copilot CLI into Neovim's PATH.";
+      };
+    };
+  };
 
   config = mkIf cfg.enable {
     home.packages = [ neovimPkg ];
