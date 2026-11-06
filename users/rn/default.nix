@@ -5,7 +5,10 @@
   ...
 }:
 {
-  sops.secrets.user-rn-password.neededForUsers = true;
+  sops.secrets = {
+    user-rn-password.neededForUsers = true;
+    icdts-gpg-key.owner = config.users.users.rn.name;
+  };
 
   users.users.rn = {
     hashedPasswordFile = config.sops.secrets.user-rn-password.path;
