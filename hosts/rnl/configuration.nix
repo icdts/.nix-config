@@ -37,8 +37,20 @@
     enable = false;
     withUWSM = true;
   };
-  services.desktopManager.plasma6.enable = true;
-  services.displayManager.sddm.enable = true;
+  programs.niri.enable = true;
+  home-manager.users.rn.custom.desktop.niri.enable = true;
+  services.desktopManager.plasma6.enable = false;
+  services.displayManager.sddm.enable = false;
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --cmd niri-session";
+        user = "greeter";
+      };
+    };
+  };
+  services.upower.enable = true;
   services.blueman.enable = true;
 
   services.asusd.enable = true;

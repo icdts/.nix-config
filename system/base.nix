@@ -60,7 +60,7 @@ in
       "ca.pem" = {
         owner = config.users.users.rn.name;
       };
-      "google-api-key" = {
+      "anilist-username" = {
         owner = config.users.users.rn.name;
       };
     };
@@ -84,6 +84,10 @@ in
   custom.home-wifi.enable = lib.mkDefault true;
 
   services.printing.enable = true;
+  systemd.services.cups-browsed = {
+    after = [ "cups.service" ];
+    serviceConfig.TimeoutStopSec = "5s";
+  };
   services.avahi = {
     enable = true;
     nssmdns4 = true;

@@ -11,6 +11,7 @@ in
 {
   imports = [
     ./hyprland
+    ./niri
     ./wayland.nix
   ];
 
@@ -19,12 +20,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    xdg.portal = {
-      enable = lib.mkForce true;
-      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-      config.common.default = "*";
-    };
-
     dconf.settings = {
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
