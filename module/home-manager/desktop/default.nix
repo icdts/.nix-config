@@ -7,6 +7,10 @@
 with lib;
 let
   cfg = config.custom.desktop;
+  usbMicroscopePkg = pkgs.writeShellScriptBin "usb-microscope" ''
+    DEV="$(${pkgs.coreutils}/bin/readlink -f /dev/v4l/by-id/usb-Etron_Technology__Inc._USB_Microscope-video-index0)"
+    exec ${pkgs.guvcview}/bin/guvcview -d "''${DEV}" "$@"
+  '';
 in
 {
   imports = [
@@ -42,6 +46,24 @@ in
       gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
       gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
       gtk4.theme = null;
+    };
+
+    home.packages = with pkgs; [
+      guvcview
+      usbMicroscopePkg
+    ];
+
+    xdg.desktopEntries.usb-microscope = {
+      name = "USB Microscope";
+      genericName = "Microscope Viewer";
+      comment = "Open guvcview directly on the Etron USB Microscope";
+      exec = "${usbMicroscopePkg}/bin/usb-microscope";
+      icon = "guvcview";
+      terminal = false;
+      categories = [
+        "AudioVideo"
+        "Video"
+      ];
     };
 
     programs = {
