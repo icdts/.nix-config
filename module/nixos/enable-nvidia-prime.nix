@@ -35,7 +35,7 @@ in
         nvidiaBusId = "PCI:196:0:0"; # c4:00.0
       };
       powerManagement = {
-        enable = false;
+        enable = true;
         finegrained = true;
       };
 

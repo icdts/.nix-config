@@ -38,7 +38,10 @@
     withUWSM = true;
   };
   programs.niri.enable = true;
-  home-manager.users.rn.custom.desktop.niri.enable = true;
+  home-manager.users.rn = {
+    custom.desktop.niri.enable = true;
+    wayland.windowManager.niri.settings.debug.render-drm-device = "/dev/dri/by-path/pci-0000:c5:00.0-render";
+  };
   services.desktopManager.plasma6.enable = false;
   services.displayManager.sddm.enable = false;
   services.greetd = {
