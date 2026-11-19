@@ -64,7 +64,14 @@ in
   config = mkIf cfg.enable {
     custom.desktop.hyprland.waybar.enable = true;
     services.mako.enable = true;
-    home.packages = [ toggle-mirror-pkg ];
+    home.packages = with pkgs; [
+      toggle-mirror-pkg
+      grim
+      hyprlock
+      slurp
+      wlogout
+      wofi
+    ];
 
     wayland.windowManager.hyprland = {
       enable = true;

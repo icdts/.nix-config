@@ -13,17 +13,12 @@ in
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      grim
-      hyprlock
       qt6.qtwayland
-      slurp
       waypipe
       wl-mirror
       wl-clipboard
-      wlogout
       wtype
       ydotool
-      wofi
       nnn
       playerctl
       brightnessctl

@@ -23,7 +23,6 @@
   swapDevices = [ { device = "/swapfile"; } ];
 
   environment.systemPackages = with pkgs; [
-    networkmanagerapplet
     orca-slicer
     android-tools
     obsidian
@@ -33,17 +32,11 @@
 
   hardware.bluetooth.enable = true; # enables support for Bluetooth
 
-  programs.hyprland = {
-    enable = false;
-    withUWSM = true;
-  };
   programs.niri.enable = true;
   home-manager.users.rn = {
     custom.desktop.niri.enable = true;
     wayland.windowManager.niri.settings.debug.render-drm-device = "/dev/dri/by-path/pci-0000:c5:00.0-render";
   };
-  services.desktopManager.plasma6.enable = false;
-  services.displayManager.sddm.enable = false;
   services.greetd = {
     enable = true;
     settings = {
@@ -54,7 +47,6 @@
     };
   };
   services.upower.enable = true;
-  services.blueman.enable = true;
 
   services.asusd.enable = true;
   powerManagement.enable = true;
