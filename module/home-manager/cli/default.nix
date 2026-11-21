@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   osConfig ? null,
@@ -8,6 +9,10 @@
 with lib;
 let
   cfg = config.custom.cli;
+  system = pkgs.stdenv.hostPlatform.system;
+  hasAntigravity =
+    inputs.llm-agents.packages ? ${system}
+    && inputs.llm-agents.packages.${system} ? antigravity-cli;
   gpgKeyFingerprint = "E8FD78A26AC9B2EDDB7E99B2A5F5FD82064D3A6B";
   gpgKeySecretPath =
     if osConfig != null && osConfig ? sops && osConfig.sops.secrets ? icdts-gpg-key then
@@ -75,17 +80,19 @@ in
       defaultCommand = "fd --type f --exclude .git --follow --hidden";
       changeDirWidget.command = "fd --type d --exclude .git --follow --hidden";
     };
-    home.packages = with pkgs; [
-      coreutils
-      fd
-      htop
-      httpie
-      jq
-      procs
-      ripgrep
-      tldr
-      zip
-      unzip
-    ];
+    home.packages =
+      (with pkgs; [
+        coreutils
+        fd
+        htop
+        httpie
+        jq
+        procs
+        ripgrep
+        tldr
+        zip
+        unzip
+      ])
+      ++ optional hasAntigravity inputs.llm-agents.packages.${system}.antigravity-cli;
   };
 }

@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -7,6 +8,10 @@
 with lib;
 let
   cfg = config.custom.desktop;
+  system = pkgs.stdenv.hostPlatform.system;
+  hasAntigravity =
+    inputs.llm-agents.packages ? ${system}
+    && inputs.llm-agents.packages.${system} ? antigravity-cli;
   usbMicroscopePkg = pkgs.writeShellScriptBin "usb-microscope" ''
     DEV="$(${pkgs.coreutils}/bin/readlink -f /dev/v4l/by-id/usb-Etron_Technology__Inc._USB_Microscope-video-index0)"
     exec ${pkgs.guvcview}/bin/guvcview -d "''${DEV}" "$@"
@@ -53,17 +58,37 @@ in
       usbMicroscopePkg
     ];
 
-    xdg.desktopEntries.usb-microscope = {
-      name = "USB Microscope";
-      genericName = "Microscope Viewer";
-      comment = "Open guvcview directly on the Etron USB Microscope";
-      exec = "${usbMicroscopePkg}/bin/usb-microscope";
-      icon = "guvcview";
-      terminal = false;
-      categories = [
-        "AudioVideo"
-        "Video"
-      ];
+    xdg.desktopEntries = {
+      usb-microscope = {
+        name = "USB Microscope";
+        genericName = "Microscope Viewer";
+        comment = "Open guvcview directly on the Etron USB Microscope";
+        exec = "${usbMicroscopePkg}/bin/usb-microscope";
+        icon = "guvcview";
+        terminal = false;
+        categories = [
+          "AudioVideo"
+          "Video"
+        ];
+      };
+    }
+    // optionalAttrs hasAntigravity {
+      antigravity = {
+        name = "Antigravity";
+        genericName = "AI Coding Assistant";
+        comment = "Launch Antigravity CLI (agy) in a terminal";
+        exec = "${inputs.llm-agents.packages.${system}.antigravity-cli}/bin/agy";
+        icon = "utilities-terminal";
+        terminal = true;
+        categories = [
+          "Development"
+          "Utility"
+          "ConsoleOnly"
+        ];
+        settings = {
+          Keywords = "agy;ai;assistant;agent;antigravity;";
+        };
+      };
     };
 
     programs = {
