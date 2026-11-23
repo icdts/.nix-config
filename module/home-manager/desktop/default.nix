@@ -12,6 +12,34 @@ let
   hasAntigravity =
     inputs.llm-agents.packages ? ${system}
     && inputs.llm-agents.packages.${system} ? antigravity-cli;
+  antigravityCliPkg = inputs.llm-agents.packages.${system}.antigravity-cli;
+  antigravityLauncherPkg = pkgs.writeShellScriptBin "antigravity-launcher" ''
+    set -euo pipefail
+
+    WORKSPACE="''${HOME}/Workspace"
+    mkdir -p "''${WORKSPACE}"
+
+    selected="$(
+      {
+        printf '%s\n' "''${WORKSPACE}"
+        ${pkgs.findutils}/bin/find "''${WORKSPACE}" -mindepth 1 -maxdepth 1 -type d -printf '%T@ %p\n' \
+          | ${pkgs.coreutils}/bin/sort -rn \
+          | ${pkgs.coreutils}/bin/cut -d' ' -f2-
+        if [ -d "''${HOME}/.nix-config" ]; then
+          printf '%s\n' "''${HOME}/.nix-config"
+        fi
+        printf '%s\n' "''${HOME}"
+      } | ${pkgs.gnused}/bin/sed "s|^''${HOME}|~|" \
+        | ${pkgs.fzf}/bin/fzf \
+            --reverse \
+            --prompt="Antigravity dir > " \
+            --header="Enter: open (default ~/Workspace) | Esc: cancel"
+    )" || exit 0
+
+    target="''${selected/#\~/''${HOME}}"
+    cd "''${target}"
+    exec ${antigravityCliPkg}/bin/agy "$@"
+  '';
   usbMicroscopePkg = pkgs.writeShellScriptBin "usb-microscope" ''
     DEV="$(${pkgs.coreutils}/bin/readlink -f /dev/v4l/by-id/usb-Etron_Technology__Inc._USB_Microscope-video-index0)"
     exec ${pkgs.guvcview}/bin/guvcview -d "''${DEV}" "$@"
@@ -76,8 +104,8 @@ in
       antigravity = {
         name = "Antigravity";
         genericName = "AI Coding Assistant";
-        comment = "Launch Antigravity CLI (agy) in a terminal";
-        exec = "${inputs.llm-agents.packages.${system}.antigravity-cli}/bin/agy";
+        comment = "Select a directory in ~/Workspace and launch Antigravity CLI (agy)";
+        exec = "${antigravityLauncherPkg}/bin/antigravity-launcher";
         icon = "utilities-terminal";
         terminal = true;
         categories = [
@@ -86,6 +114,7 @@ in
           "ConsoleOnly"
         ];
         settings = {
+          Path = "${config.home.homeDirectory}/Workspace";
           Keywords = "agy;ai;assistant;agent;antigravity;";
         };
       };
