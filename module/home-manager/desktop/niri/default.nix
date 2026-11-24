@@ -430,6 +430,12 @@ in
               clip-to-geometry = true;
             };
           }
+          {
+            window-rule = {
+              match._props.app-id = "^com\\.mitchellh\\.ghostty$";
+              draw-border-with-background = false;
+            };
+          }
         ];
 
         binds = {
